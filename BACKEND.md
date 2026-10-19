@@ -1,7 +1,7 @@
 # EGYHOST — الدليل الشامل لمعمارية الباك إند وقاعدة البيانات
 ## Backend Architecture Blueprint (PHP 8.2+ & MySQL 8.0)
 **نظام التصميم والبنية:** Cloud Core Precision  
-**المنصة:** EGYHOST (Cloud VPS & Managed n8n Automation Infrastructure)  
+**المنصة:** EGYHOST (Cloud Hosting & Managed n8n Automation Infrastructure)  
 **التقنيات الأساسية:** PHP 8.2+ | MySQL 8.0 / MariaDB 10.4+ | Docker Engine API | Nginx / Traefik  
 
 ---
@@ -17,8 +17,8 @@
 ```
 ┌────────────────────────────────────────────────────────┐
 │           واجهة المستخدم الحالية (Frontend Client)       │
-│  - حاسبة الموارد المخصصة - محاكي خط التجهيز الآلي       │
-│  - استعراض باقات n8n والـ VPS - بوابات الدفع المحلية    │
+│  - استعراض باقات n8n والسيرفرات السحابية (Cloud)       │
+│  - بوابات الدفع المحلية (إنستاباي وفودافون كاش وفوري)  │
 └───────────────────────────┬────────────────────────────┘
                             │ HTTPS / REST API (JSON)
                             ▼

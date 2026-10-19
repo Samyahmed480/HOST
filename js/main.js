@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       }
     ],
-    vps: [
+    cloud: [
       {
-        id: 'vps-1',
-        name: 'Cloud VPS - Standard 1',
+        id: 'cloud-1',
+        name: 'Cloud Server - Standard 1',
         desc: 'سيرفر سحابي مخصص للمواقع الصغيرة، واجهات البرمجة، والبيئات التجريبية.',
         priceEgp: 190,
         cpu: '1 vCPU AMD EPYC',
@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       },
       {
-        id: 'vps-2',
-        name: 'Cloud VPS - Performance 2',
+        id: 'cloud-2',
+        name: 'Cloud Server - Performance 2',
         desc: 'التوازن المثالي للشركات الناشئة، السيرفرات التجارية وسيرفرات التطبيقات.',
         priceEgp: 340,
         cpu: '2 vCPU AMD EPYC',
@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       },
       {
-        id: 'vps-4',
-        name: 'Cloud VPS - Pro Compute 4',
+        id: 'cloud-4',
+        name: 'Cloud Server - Pro Compute 4',
         desc: 'أداء فائق لقواعد البيانات الضخمة، المتاجر الكبيرة وسيناريوهات الإنتاج الحرجة.',
         priceEgp: 620,
         cpu: '4 vCPU AMD EPYC',
@@ -133,7 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  let activePlanType = 'n8n'; // 'n8n' or 'vps'
+  // Backwards compatibility alias
+  plansData.vps = plansData.cloud;
+
+  let activePlanType = 'n8n'; // 'n8n' or 'cloud'
 
   // --- Currency & Billing Conversion Helper ---
   function formatPrice(egpAmount) {
@@ -250,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Plan Type Switcher (n8n Cloud vs VPS) ---
+  // --- Plan Type Switcher (n8n Cloud vs Cloud Compute) ---
   const planTypeBtns = document.querySelectorAll('.plan-tab-btn');
   planTypeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -277,18 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Quick Terminal Copy in Hero ---
-  const heroCopyBtn = document.getElementById('heroCopyBtn');
-  if (heroCopyBtn) {
-    heroCopyBtn.addEventListener('click', () => {
-      const cmd = document.getElementById('heroTerminalCmd')?.innerText;
-      if (navigator.clipboard && cmd) {
-        navigator.clipboard.writeText(cmd).then(() => {
-          showToast('تم نسخ أمر التجهيز السريع!');
-        });
-      }
-    });
-  }
+
 
   // --- FAQ Accordion ---
   const faqItems = document.querySelectorAll('.faq-item');

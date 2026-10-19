@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   
   <title>EGYHOST | سيرفرات سحابية واستضافة n8n للأتمتة - شركة مصرية مرخصة (778319636)</title>
-  <meta name="description" content="منصة EGYHOST الرسمية: شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636). نقدم سيرفرات VPS سحابية، استضافة n8n للأتمتة والذكاء الاصطناعي، حجز النطاقات، وضمان استرداد 30 يوماً.">
-  <meta name="keywords" content="سيرفرات, VPS مصر, استضافة n8n, سيرفر n8n, Cloud VPS Egypt, سيرفرات سحابية, أتمتة n8n, ذكاء اصطناعي, إنستاباي, فودافون كاش, EGYHOST">
+  <meta name="description" content="منصة EGYHOST الرسمية: شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636). نقدم السيرفرات السحابية (Cloud Hosting)، استضافة n8n للأتمتة والذكاء الاصطناعي، حجز النطاقات، وضمان استرداد 30 يوماً.">
+  <meta name="keywords" content="سيرفرات سحابية, استضافة كلاود مصر, استضافة n8n, سيرفر n8n, Cloud Server Egypt, استضافة سحابية, أتمتة n8n, ذكاء اصطناعي, إنستاباي, فودافون كاش, EGYHOST">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -58,7 +58,7 @@
         <nav>
           <ul class="nav-links">
             <li><a href="#n8n-plans" class="nav-link active">سحابة n8n للأتمتة</a></li>
-            <li><a href="#vps-plans" class="nav-link">سيرفرات الـ VPS</a></li>
+            <li><a href="#cloud-plans" class="nav-link">السيرفرات السحابية</a></li>
             <li><a href="#templates" class="nav-link">قوالب الأتمتة</a></li>
             <li><a href="#faq" class="nav-link">الأسئلة الشائعة</a></li>
             <li><a href="about.html" class="nav-link">من نحن</a></li>
@@ -74,7 +74,7 @@
             <button class="currency-btn" data-currency="USD">USD $</button>
           </div>
 
-          <a href="#vps-plans" class="btn btn-secondary btn-sm">سيرفرات VPS</a>
+          <a href="#cloud-plans" class="btn btn-secondary btn-sm">السيرفرات السحابية</a>
           <a href="#n8n-plans" class="btn btn-accent btn-sm">
             <span>ابدأ الآن</span>
             <span>←</span>
@@ -100,7 +100,7 @@
         </div>
 
         <h1 class="display-hero hero-title">
-          بنية تحتية سحابية هندسية فائقة السرعة لسيرفرات <span class="text-gradient">VPS واستضافة n8n</span> للأتمتة والذكاء الاصطناعي
+          بنية تحتية سحابية هندسية فائقة السرعة لسيرفرات <span class="text-gradient">الكلاود واستضافة n8n</span> للأتمتة والذكاء الاصطناعي
         </h1>
 
         <p class="body-lg hero-description">
@@ -112,21 +112,9 @@
             <span>تصفح سيرفرات n8n المُدارة</span>
             <span style="font-size: 18px;">←</span>
           </a>
-          <a href="#vps-plans" class="btn btn-secondary btn-lg">
-            <span>تصفح سيرفرات VPS السحابية</span>
+          <a href="#cloud-plans" class="btn btn-secondary btn-lg">
+            <span>تصفح السيرفرات السحابية (Cloud)</span>
           </a>
-        </div>
-
-        <!-- Hero Quick CLI Deployment Snippet -->
-        <div class="hero-quick-terminal">
-          <div class="quick-terminal-command ltr-force">
-            <span class="terminal-prompt-symbol">$</span>
-            <span id="heroTerminalCmd">curl -sSL https://get.egyhost.cloud/deploy-n8n.sh | bash</span>
-          </div>
-          <button class="copy-mini-btn" id="heroCopyBtn" title="نسخ الأمر">
-            <span>نسخ</span>
-            <span>📋</span>
-          </button>
         </div>
       </div>
 
@@ -194,6 +182,7 @@
 
   <!-- Plans & Pricing Section -->
   <section id="n8n-plans" class="plans-section">
+    <div id="cloud-plans" style="position: relative; top: -80px;"></div>
     <div class="container">
       <div class="section-head">
         <span class="section-subtitle">FLEXIBLE INFRASTRUCTURE PRICING</span>
@@ -203,13 +192,13 @@
         </p>
       </div>
 
-      <!-- Plan Type Switcher (n8n vs VPS) -->
+      <!-- Plan Type Switcher (n8n vs Cloud) -->
       <div class="plan-type-tabs">
         <button class="plan-tab-btn active" data-type="n8n">
           <span>⚡ استضافة سحابة n8n المُدارة</span>
         </button>
-        <button class="plan-tab-btn" data-type="vps">
-          <span>🖥️ سيرفرات الـ VPS السحابية (Root Access)</span>
+        <button class="plan-tab-btn" data-type="cloud">
+          <span>☁️ السيرفرات السحابية (Cloud Compute &amp; Root)</span>
         </button>
       </div>
 
@@ -349,7 +338,7 @@
             <span class="faq-toggle-icon">▼</span>
           </div>
           <div class="faq-answer">
-            نعم بالتأكيد! جميع سيرفرات الـ VPS وسيرفرات n8n تأتي مع صلاحيات Root كاملة عبر SSH، ويمكنك الدخول على السيرفر، تثبيت أي برمجيات أخرى مثل Docker، Nginx، PostgreSQL، Redis أو تشغيل تطبيقاتك الخاصة بجانب n8n بكل حرية.
+            نعم بالتأكيد! جميع السيرفرات السحابية (Cloud Servers) وسيرفرات n8n تأتي مع صلاحيات Root كاملة عبر SSH، ويمكنك الدخول على السيرفر، تثبيت أي برمجيات أخرى مثل Docker، Nginx، PostgreSQL، Redis أو تشغيل تطبيقاتك الخاصة بجانب n8n بكل حرية.
           </div>
         </div>
 
@@ -412,7 +401,7 @@
           <h4 class="footer-col-title">الخدمات السحابية</h4>
           <ul class="footer-links">
             <li><a href="#n8n-plans">استضافة n8n المُدارة</a></li>
-            <li><a href="#vps-plans">سيرفرات Cloud VPS</a></li>
+            <li><a href="#cloud-plans">السيرفرات السحابية (Cloud Servers)</a></li>
             <li><a href="#templates">قوالب الأتمتة الجاهزة</a></li>
             <li><a href="#faq">الأسئلة الشائعة والأمان</a></li>
             <li><a href="#hero">لوحة قياس الأداء الحية</a></li>

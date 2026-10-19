@@ -17,6 +17,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- ThreeUI Typography & Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
@@ -125,13 +130,13 @@
           </div>
         </div>
 
-        <!-- Hero Interactive Showcase Card (Three.js 3D & Telemetry) -->
+        <!-- Hero Interactive Showcase Card (ThreeUI & Telemetry) -->
         <div class="hero-card-stack">
-          <!-- View Switcher Tabs (Apple Style) -->
+          <!-- View Switcher Tabs (ThreeUI / Apple Style) -->
           <div class="hero-view-tabs" role="tablist">
             <button class="hero-view-tab-btn active" id="tabBtn3D" data-view="3d">
               <span>🔮</span>
-              <span>المجسم السحابي 3D</span>
+              <span>مجسم ThreeUI السحابي</span>
             </button>
             <button class="hero-view-tab-btn" id="tabBtnTelemetry" data-view="telemetry">
               <span>📊</span>
@@ -139,48 +144,59 @@
             </button>
           </div>
 
-          <!-- 3D Three.js Interactive View -->
+          <!-- ThreeUI Interactive View (https://threeui.com) -->
           <div id="view3dContainer" class="hero-interactive-view active">
-            <div class="telemetry-preview-card three-card-box">
+            <div class="telemetry-preview-card three-card-box threeui-card-box">
               <div class="card-top-accent"></div>
-              <div class="telemetry-card-header">
+              <div class="telemetry-card-header threeui-card-header">
                 <div class="server-identity">
-                  <span class="status-indicator-live"></span>
-                  <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">Three.js WebGL Cluster Core</span>
+                  <span class="threeui-mark-icon" title="ThreeUI Engine (threeui.com)">
+                    <svg viewBox="0 0 512 512" width="20" height="20" fill="currentColor">
+                      <circle cx="256" cy="256" r="208" fill="#00d8ff" opacity="0.2"/>
+                      <path d="M36 178C112 252 184 264 260 196C336 128 404 114 482 180" stroke="#00d8ff" stroke-width="32" fill="none" stroke-linecap="round"/>
+                      <path d="M36 292C112 366 184 378 260 310C336 242 404 228 482 294" stroke="#00d8ff" stroke-width="32" fill="none" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span style="font-family: 'JetBrains Mono', var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">ThreeUI Aureon Infrastructure Rotor</span>
                 </div>
-                <span class="label-badge" style="background: rgba(0, 216, 255, 0.15); color: #0284c7; font-family: var(--font-mono); font-weight: 600;">
-                  60 FPS • Interactive 3D
-                </span>
+                <a href="https://threeui.com" target="_blank" rel="noopener" class="label-badge threeui-badge" title="زيارة وثائق ThreeUI الرسمية">
+                  threeui.com • 60 FPS
+                </a>
               </div>
 
-              <!-- 3D Canvas Viewport -->
+              <!-- ThreeUI 3D Canvas Viewport -->
               <div class="three-canvas-wrapper" id="threeCanvasWrapper">
                 <canvas id="egyhostThreeCanvas"></canvas>
                 
-                <!-- 3D Interactive Hint -->
+                <!-- ThreeUI Interactive Overlay Hint -->
                 <div class="three-hint-badge">
-                  <span>🖱️ اسحب للتدوير ثلاثي الأبعاد • انقر لنبض البيانات</span>
+                  <span>🖱️ اسحب للتدوير ثلاثي الأبعاد • انقر لتسريع دوران التوربين</span>
+                </div>
+
+                <!-- ThreeUI Watermark -->
+                <div class="threeui-watermark">
+                  <span>Powered by <strong>ThreeUI</strong></span>
                 </div>
               </div>
 
-              <!-- 3D Interactive Controls -->
-              <div class="three-controls-bar">
-                <button type="button" class="three-ctrl-btn active" id="btnThreeRotate" title="تشغيل/إيقاف الدوران التلقائي">
-                  <span>🔄 تدوير تلقائي</span>
+              <!-- ThreeUI Interactive Controls Bar -->
+              <div class="three-controls-bar threeui-controls-bar">
+                <button type="button" class="three-ctrl-btn active" id="btnThreeRotate" title="تشغيل/إيقاف دوران المحرك التلقائي">
+                  <span>🔄 دوران تلقائي</span>
                 </button>
-                <button type="button" class="three-ctrl-btn" id="btnThreeBurst" title="إرسال دفعة بيانات تفاعلية">
-                  <span>⚡ نبض البيانات</span>
+                <button type="button" class="three-ctrl-btn" id="btnThreeBurst" title="تسريع نبض التوربين التدفقي">
+                  <span>⚡ تسريع التوربين</span>
                 </button>
                 <button type="button" class="three-ctrl-btn" id="btnThreeReset" title="إعادة ضبط زاوية الرؤية">
                   <span>🌐 إعادة الزاوية</span>
                 </button>
               </div>
 
-              <!-- 3D Card Footer Meta -->
-              <div class="three-footer-meta">
+              <!-- ThreeUI Footer Meta Readout -->
+              <div class="three-footer-meta threeui-footer-meta">
                 <span>🇪🇬 Cairo Node (EG-IX)</span>
+                <span>Asset: <strong>Aureon Rotor v1.2</strong></span>
                 <span>Latency: <strong>&lt; 8ms</strong></span>
-                <span>n8n Core: <strong>Active</strong></span>
               </div>
             </div>
           </div>

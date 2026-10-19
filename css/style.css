@@ -738,6 +738,99 @@ pre,
   background: #ffffff;
 }
 
+/* ThreeUI Signature Visual Styling (https://threeui.com) */
+.threeui-card-box {
+  background: rgba(14, 17, 24, 0.94);
+  border: 1px solid rgba(0, 216, 255, 0.2);
+  box-shadow: 0 24px 60px -16px rgba(0, 7, 20, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.threeui-card-header {
+  background: rgba(8, 11, 18, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.threeui-card-header .server-identity span {
+  color: #f1f5f9 !important;
+}
+
+.threeui-mark-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 216, 255, 0.08);
+  border: 1px solid rgba(0, 216, 255, 0.25);
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.2);
+}
+
+.threeui-badge {
+  background: rgba(0, 216, 255, 0.12) !important;
+  color: var(--cloud-cyan-bright) !important;
+  border: 1px solid rgba(0, 216, 255, 0.3);
+  text-decoration: none;
+  transition: all var(--transition-fast) var(--apple-spring);
+}
+
+.threeui-badge:hover {
+  background: rgba(0, 216, 255, 0.22) !important;
+  box-shadow: 0 0 12px rgba(0, 216, 255, 0.35);
+  transform: scale(1.03);
+}
+
+.threeui-watermark {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-family: 'JetBrains Mono', var(--font-mono);
+  font-size: 10px;
+  color: rgba(203, 213, 225, 0.45);
+  pointer-events: none;
+  z-index: 5;
+  letter-spacing: 0.05em;
+}
+
+.threeui-watermark strong {
+  color: var(--cloud-cyan-bright);
+}
+
+.threeui-controls-bar {
+  background: rgba(8, 11, 18, 0.92);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.threeui-controls-bar .three-ctrl-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+}
+
+.threeui-controls-bar .three-ctrl-btn:hover {
+  background: rgba(0, 216, 255, 0.15);
+  border-color: var(--cloud-cyan-bright);
+  color: var(--cloud-cyan-bright);
+}
+
+.threeui-controls-bar .three-ctrl-btn.active {
+  background: rgba(0, 216, 255, 0.18);
+  border-color: var(--cloud-cyan-bright);
+  color: var(--cloud-cyan-bright);
+  box-shadow: 0 0 12px rgba(0, 216, 255, 0.25);
+}
+
+.threeui-footer-meta {
+  background: rgba(6, 9, 15, 0.96);
+  color: #94a3b8;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.threeui-footer-meta strong {
+  color: var(--cloud-cyan-bright);
+}
+
 .telemetry-preview-card {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: var(--apple-blur);

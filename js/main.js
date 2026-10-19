@@ -589,8 +589,8 @@ document.addEventListener('DOMContentLoaded', () => {
   tabBtn3D?.addEventListener('click', () => switchHeroView('3d'));
   tabBtnTelemetry?.addEventListener('click', () => switchHeroView('telemetry'));
 
-  // --- Three.js Interactive 3D Cloud Cluster Engine ---
-  function initThreeJsCluster() {
+  // --- ThreeUI Interactive 3D Aureon Infrastructure Rotor (https://threeui.com) ---
+  function initThreeUIInfrastructureRotor() {
     const canvas = document.getElementById('egyhostThreeCanvas');
     const wrapper = document.getElementById('threeCanvasWrapper');
     if (!canvas || !wrapper || typeof window.THREE === 'undefined') {
@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const THREE = window.THREE;
 
-    // Renderer
+    // ThreeUI WebGL Renderer Setup
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       antialias: true,
@@ -609,151 +609,183 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
 
-    // Scene & Camera
+    // ThreeUI Scene & Camera
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 100);
-    camera.position.set(0, 1.2, 7.6);
+    const camera = new THREE.PerspectiveCamera(42, wrapper.clientWidth / wrapper.clientHeight, 0.1, 100);
+    camera.position.set(0, 1.4, 7.8);
 
-    // Lighting (Apple Keynote Holographic Ambiance)
-    const ambientLight = new THREE.AmbientLight(0x0a2240, 1.9);
+    // ThreeUI Studio Lighting (Dark Obsidian & Azure Glow)
+    const ambientLight = new THREE.AmbientLight(0x061426, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0x00d8ff, 2.8);
-    keyLight.position.set(5, 7, 6);
+    const keyLight = new THREE.DirectionalLight(0x00d8ff, 3.2);
+    keyLight.position.set(6, 8, 6);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
-    fillLight.position.set(-6, -4, 4);
-    scene.add(fillLight);
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
+    rimLight.position.set(-6, -3, 4);
+    scene.add(rimLight);
 
-    const coreLight = new THREE.PointLight(0x00f0ff, 3.2, 12);
-    coreLight.position.set(0, 0, 0);
-    scene.add(coreLight);
+    const centerFluxLight = new THREE.PointLight(0x00e5ff, 4.0, 15);
+    centerFluxLight.position.set(0, 0, 0);
+    scene.add(centerFluxLight);
 
-    // Main Cluster Group
-    const clusterGroup = new THREE.Group();
-    clusterGroup.rotation.x = 0.28;
-    clusterGroup.rotation.y = 0.55;
-    scene.add(clusterGroup);
+    // Master Aureon Infrastructure Assembly Group
+    const rotorSystemGroup = new THREE.Group();
+    rotorSystemGroup.rotation.x = 0.35;
+    rotorSystemGroup.rotation.y = 0.55;
+    scene.add(rotorSystemGroup);
 
-    // 1. Central Server Frame (Liquid Navy Gloss Cube)
-    const coreGeo = new THREE.BoxGeometry(2.3, 2.3, 2.3);
-    const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x051329,
-      metalness: 0.9,
-      roughness: 0.15,
-      transparent: true,
-      opacity: 0.88
+    // --- Sub-Assembly 1: High-Speed Spinning Turbine Rotor ---
+    const spinningRotorGroup = new THREE.Group();
+    rotorSystemGroup.add(spinningRotorGroup);
+
+    // Central Titanium Hub Core
+    const hubGeo = new THREE.CylinderGeometry(0.72, 0.72, 0.65, 32);
+    const hubMat = new THREE.MeshStandardMaterial({
+      color: 0x071528,
+      metalness: 0.95,
+      roughness: 0.15
     });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    clusterGroup.add(coreMesh);
+    const hubMesh = new THREE.Mesh(hubGeo, hubMat);
+    hubMesh.rotation.x = Math.PI / 2;
+    spinningRotorGroup.add(hubMesh);
 
-    // Cyan Glowing Wireframe Edges
-    const edgesGeo = new THREE.EdgesGeometry(coreGeo);
-    const edgesMat = new THREE.LineBasicMaterial({
+    // Inner Glowing Flux Ring
+    const fluxRingGeo = new THREE.TorusGeometry(0.68, 0.04, 16, 48);
+    const fluxRingMat = new THREE.MeshStandardMaterial({
       color: 0x00d8ff,
-      transparent: true,
-      opacity: 0.95
-    });
-    const wireframe = new THREE.LineSegments(edgesGeo, edgesMat);
-    clusterGroup.add(wireframe);
-
-    // 2. Internal Quantum Nucleus (Emissive Octahedron)
-    const nucleusGeo = new THREE.OctahedronGeometry(0.85, 0);
-    const nucleusMat = new THREE.MeshStandardMaterial({
-      color: 0x00e5ff,
-      emissive: 0x0099cc,
-      emissiveIntensity: 0.9,
-      roughness: 0.1,
-      metalness: 0.85
-    });
-    const nucleusMesh = new THREE.Mesh(nucleusGeo, nucleusMat);
-    clusterGroup.add(nucleusMesh);
-
-    // 3. Gyroscopic Orbital Rings
-    const ring1Geo = new THREE.TorusGeometry(2.1, 0.035, 16, 90);
-    const ring1Mat = new THREE.MeshStandardMaterial({
-      color: 0x00d8ff,
-      emissive: 0x007799,
-      emissiveIntensity: 0.6,
-      metalness: 0.8,
-      roughness: 0.2
-    });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    ring1.rotation.x = Math.PI / 3;
-    clusterGroup.add(ring1);
-
-    const ring2Geo = new THREE.TorusGeometry(2.7, 0.028, 16, 100);
-    const ring2Mat = new THREE.MeshStandardMaterial({
-      color: 0x10b981,
-      emissive: 0x047857,
-      emissiveIntensity: 0.5,
-      metalness: 0.8,
-      roughness: 0.2
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.rotation.y = Math.PI / 4;
-    ring2.rotation.x = -Math.PI / 6;
-    clusterGroup.add(ring2);
-
-    // 4. Orbiting Cluster Node Satellites (n8n Webhook Orbits)
-    const satellites = [];
-    const satGeo = new THREE.SphereGeometry(0.12, 16, 16);
-    const satMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
       emissive: 0x00d8ff,
-      emissiveIntensity: 1.1
+      emissiveIntensity: 1.2
     });
-    for (let i = 0; i < 4; i++) {
-      const sat = new THREE.Mesh(satGeo, satMat);
-      clusterGroup.add(sat);
-      satellites.push({
-        mesh: sat,
-        orbitRadius: 2.1 + (i % 2) * 0.6,
-        speed: 0.9 + i * 0.35,
-        offset: (i * Math.PI) / 2
+    const fluxRing = new THREE.Mesh(fluxRingGeo, fluxRingMat);
+    spinningRotorGroup.add(fluxRing);
+
+    // 12 Aerodynamic Turbine Blades (ThreeUI Rotor Geometry)
+    const bladeCount = 12;
+    const bladeGeo = new THREE.BoxGeometry(0.16, 1.25, 0.04);
+    const bladeMat = new THREE.MeshStandardMaterial({
+      color: 0x0a1e38,
+      metalness: 0.92,
+      roughness: 0.18
+    });
+
+    for (let i = 0; i < bladeCount; i++) {
+      const angle = (i * Math.PI * 2) / bladeCount;
+      const blade = new THREE.Mesh(bladeGeo, bladeMat);
+      blade.position.x = Math.cos(angle) * 1.15;
+      blade.position.y = Math.sin(angle) * 1.15;
+      blade.rotation.z = angle;
+      blade.rotation.y = 0.38; // Aerodynamic pitch angle
+      spinningRotorGroup.add(blade);
+
+      // Blade Edge Highlighter
+      const bladeEdgeGeo = new THREE.EdgesGeometry(bladeGeo);
+      const bladeEdgeMat = new THREE.LineBasicMaterial({
+        color: 0x00d8ff,
+        transparent: true,
+        opacity: 0.75
       });
+      const bladeEdge = new THREE.LineSegments(bladeEdgeGeo, bladeEdgeMat);
+      blade.add(bladeEdge);
     }
 
-    // 5. Constellation Data Particles
-    const particleCount = 360;
+    // --- Sub-Assembly 2: Counter-Rotating Magnetic Stator ---
+    const counterStatorGroup = new THREE.Group();
+    rotorSystemGroup.add(counterStatorGroup);
+
+    const statorRingGeo = new THREE.TorusGeometry(2.05, 0.045, 16, 64);
+    const statorRingMat = new THREE.MeshStandardMaterial({
+      color: 0x00d8ff,
+      emissive: 0x005577,
+      emissiveIntensity: 0.6,
+      metalness: 0.85,
+      roughness: 0.25
+    });
+    const statorRing = new THREE.Mesh(statorRingGeo, statorRingMat);
+    counterStatorGroup.add(statorRing);
+
+    // 8 Magnetic Stator Coils
+    const coilGeo = new THREE.BoxGeometry(0.18, 0.18, 0.24);
+    const coilMat = new THREE.MeshStandardMaterial({
+      color: 0x10b981,
+      emissive: 0x059669,
+      emissiveIntensity: 0.8
+    });
+    for (let j = 0; j < 8; j++) {
+      const theta = (j * Math.PI * 2) / 8;
+      const coil = new THREE.Mesh(coilGeo, coilMat);
+      coil.position.x = Math.cos(theta) * 2.05;
+      coil.position.y = Math.sin(theta) * 2.05;
+      counterStatorGroup.add(coil);
+    }
+
+    // --- Sub-Assembly 3: Gyroscopic Containment Gimbals ---
+    const gimbal1Geo = new THREE.TorusGeometry(2.65, 0.035, 16, 90);
+    const gimbal1Mat = new THREE.MeshStandardMaterial({
+      color: 0x00d8ff,
+      emissive: 0x004466,
+      emissiveIntensity: 0.5,
+      metalness: 0.9,
+      roughness: 0.2
+    });
+    const gimbal1 = new THREE.Mesh(gimbal1Geo, gimbal1Mat);
+    gimbal1.rotation.x = Math.PI / 3.5;
+    rotorSystemGroup.add(gimbal1);
+
+    const gimbal2Geo = new THREE.TorusGeometry(2.95, 0.025, 16, 100);
+    const gimbal2Mat = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.4,
+      metalness: 0.9,
+      roughness: 0.2
+    });
+    const gimbal2 = new THREE.Mesh(gimbal2Geo, gimbal2Mat);
+    gimbal2.rotation.y = Math.PI / 4;
+    gimbal2.rotation.x = -Math.PI / 5;
+    rotorSystemGroup.add(gimbal2);
+
+    // --- Sub-Assembly 4: Floating Micro-Particles (ThreeUI Cloud Atmosphere) ---
+    const particleCount = 300;
     const particlePositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      const radius = 2.4 + Math.random() * 2.8;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos((Math.random() * 2) - 1);
-      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      particlePositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      particlePositions[i * 3 + 2] = radius * Math.cos(phi);
+    for (let k = 0; k < particleCount; k++) {
+      const rad = 2.4 + Math.random() * 2.6;
+      const t = Math.random() * Math.PI * 2;
+      const p = Math.acos((Math.random() * 2) - 1);
+      particlePositions[k * 3] = rad * Math.sin(p) * Math.cos(t);
+      particlePositions[k * 3 + 1] = rad * Math.sin(p) * Math.sin(t);
+      particlePositions[k * 3 + 2] = rad * Math.cos(p);
     }
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: 0x67e8f9,
-      size: 0.055,
+      size: 0.05,
       transparent: true,
-      opacity: 0.82
+      opacity: 0.8
     });
-    const particleSystem = new THREE.Points(particleGeo, particleMat);
-    clusterGroup.add(particleSystem);
+    const particleCloud = new THREE.Points(particleGeo, particleMat);
+    rotorSystemGroup.add(particleCloud);
 
-    // 6. Holographic Floor Grid
-    const gridHelper = new THREE.GridHelper(8, 16, 0x00d8ff, 0x0d284a);
-    gridHelper.position.y = -2.2;
+    // ThreeUI Holographic Polar Grid
+    const gridHelper = new THREE.PolarGridHelper(3.4, 16, 8, 32, 0x00d8ff, 0x0e2848);
+    gridHelper.position.z = -0.5;
+    gridHelper.rotation.x = Math.PI / 2;
     gridHelper.material.transparent = true;
-    gridHelper.material.opacity = 0.32;
-    clusterGroup.add(gridHelper);
+    gridHelper.material.opacity = 0.28;
+    rotorSystemGroup.add(gridHelper);
 
-    // Interaction & Animation State
+    // Interaction & Animation Physics State
     let isDragging = false;
     let prevMousePos = { x: 0, y: 0 };
-    let targetRotationX = 0.28;
+    let targetRotationX = 0.35;
     let targetRotationY = 0.55;
     let autoRotate = true;
-    let burstActive = false;
-    let burstProgress = 0;
+    let rotorSpeed = 0.022; // Current blade RPM velocity
+    let targetRotorSpeed = 0.022;
 
-    // Pointer Handlers (Mouse & Touch)
+    // Pointer Handlers (Smooth Orbit Drag)
     function onPointerDown(e) {
       isDragging = true;
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -768,10 +800,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const deltaX = clientX - prevMousePos.x;
       const deltaY = clientY - prevMousePos.y;
 
-      targetRotationY += deltaX * 0.007;
-      targetRotationX += deltaY * 0.007;
-
-      // Clamp vertical rotation so scene doesn't flip
+      targetRotationY += deltaX * 0.006;
+      targetRotationX += deltaY * 0.006;
       targetRotationX = Math.max(-0.85, Math.min(0.85, targetRotationX));
       prevMousePos = { x: clientX, y: clientY };
     }
@@ -788,21 +818,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchmove', onPointerMove, { passive: true });
     window.addEventListener('touchend', onPointerUp);
 
-    // Trigger Data Burst on Canvas Click
-    function triggerBurst() {
-      burstActive = true;
-      burstProgress = 0;
-      showToast('⚡ تم إرسال نبض بيانات للأتمتة عبر Three.js');
+    // Turbine Acceleration Flare Function
+    function boostTurbine() {
+      targetRotorSpeed = 0.095; // Ramp up speed
+      centerFluxLight.intensity = 6.5;
+      showToast('⚡ تم تسريع توربين ThreeUI Aureon Rotor بنجاح');
     }
 
-    wrapper.addEventListener('click', (e) => {
-      // If clicking directly on wrapper without big drag
+    wrapper.addEventListener('click', () => {
       if (!isDragging) {
-        triggerBurst();
+        boostTurbine();
       }
     });
 
-    // Interactive Control Buttons
+    // Control Buttons Handlers
     const btnRotate = document.getElementById('btnThreeRotate');
     const btnBurst = document.getElementById('btnThreeBurst');
     const btnReset = document.getElementById('btnThreeReset');
@@ -811,22 +840,24 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       autoRotate = !autoRotate;
       btnRotate.classList.toggle('active', autoRotate);
-      showToast(autoRotate ? 'تم تفعيل التدوير التلقائي' : 'تم إيقاف التدوير التلقائي');
+      showToast(autoRotate ? 'تم تفعيل الدوران التلقائي' : 'تم إيقاف الدوران التلقائي');
     });
 
     btnBurst?.addEventListener('click', (e) => {
       e.stopPropagation();
-      triggerBurst();
+      boostTurbine();
     });
 
     btnReset?.addEventListener('click', (e) => {
       e.stopPropagation();
-      targetRotationX = 0.28;
+      targetRotationX = 0.35;
       targetRotationY = 0.55;
+      targetRotorSpeed = 0.022;
+      centerFluxLight.intensity = 4.0;
       showToast('تمت إعادة زاوية الرؤية للوضع الافتراضي');
     });
 
-    // Window Resize Handler
+    // Resize Handler
     function handleResize() {
       if (!wrapper || !renderer || !camera) return;
       const width = wrapper.clientWidth;
@@ -840,57 +871,37 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', handleResize);
     window.egyhostThreeResize = handleResize;
 
-    // Render Animation Loop
-    const clock = new THREE.Clock();
-
+    // Render Animation Loop (ThreeUI 60FPS Architecture)
     function animate() {
       requestAnimationFrame(animate);
 
-      const delta = clock.getDelta();
-      const time = clock.getElapsedTime();
-
-      // Auto rotation
+      // System Auto-precession
       if (autoRotate && !isDragging) {
-        targetRotationY += 0.005;
+        targetRotationY += 0.004;
       }
 
-      // Smooth Apple spring physics lerp
-      clusterGroup.rotation.y += (targetRotationY - clusterGroup.rotation.y) * 0.08;
-      clusterGroup.rotation.x += (targetRotationX - clusterGroup.rotation.x) * 0.08;
+      // Smooth Spring Lerp Damping
+      rotorSystemGroup.rotation.y += (targetRotationY - rotorSystemGroup.rotation.y) * 0.08;
+      rotorSystemGroup.rotation.x += (targetRotationX - rotorSystemGroup.rotation.x) * 0.08;
 
-      // Internal nucleus counter rotation
-      nucleusMesh.rotation.y -= 0.015;
-      nucleusMesh.rotation.x += 0.01;
-
-      // Gyroscopic rings rotation
-      ring1.rotation.z += 0.008;
-      ring2.rotation.z -= 0.006;
-
-      // Orbit satellites
-      satellites.forEach(sat => {
-        const angle = time * sat.speed + sat.offset;
-        sat.mesh.position.x = Math.cos(angle) * sat.orbitRadius;
-        sat.mesh.position.z = Math.sin(angle) * sat.orbitRadius;
-        sat.mesh.position.y = Math.sin(angle * 2) * 0.35;
-      });
-
-      // Interactive burst animation
-      if (burstActive) {
-        burstProgress += delta * 2.2;
-        const pulse = Math.sin(burstProgress * Math.PI);
-        if (burstProgress >= 1.0) {
-          burstActive = false;
-          burstProgress = 0;
-          nucleusMat.emissiveIntensity = 0.9;
-          coreMesh.scale.set(1, 1, 1);
-          ring1.scale.set(1, 1, 1);
-        } else {
-          nucleusMat.emissiveIntensity = 0.9 + pulse * 2.0;
-          const s = 1.0 + pulse * 0.12;
-          coreMesh.scale.set(s, s, s);
-          ring1.scale.set(1 + pulse * 0.18, 1 + pulse * 0.18, 1 + pulse * 0.18);
-        }
+      // Rotor Acceleration & Natural Deceleration Spring Physics
+      rotorSpeed += (targetRotorSpeed - rotorSpeed) * 0.05;
+      if (targetRotorSpeed > 0.023) {
+        targetRotorSpeed -= 0.001; // Gradually recover to base cruising speed
       }
+      if (centerFluxLight.intensity > 4.0) {
+        centerFluxLight.intensity -= 0.04;
+      }
+
+      // Spin Rotor Blades
+      spinningRotorGroup.rotation.z += rotorSpeed;
+
+      // Counter-rotate Stator Ring
+      counterStatorGroup.rotation.z -= rotorSpeed * 0.45;
+
+      // Gyroscopic Gimbals Precession
+      gimbal1.rotation.z += 0.007;
+      gimbal2.rotation.z -= 0.005;
 
       renderer.render(scene, camera);
     }
@@ -898,8 +909,8 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   }
 
-  // Initialize Three.js Cluster
-  initThreeJsCluster();
+  // Initialize ThreeUI Rotor
+  initThreeUIInfrastructureRotor();
 
   // Initial runs
   renderPricingCards();

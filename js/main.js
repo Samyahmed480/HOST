@@ -523,49 +523,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0xf1f6fd, 14, 42);
+    scene.fog = new THREE.Fog(0xf1f6fd, 18, 55);
 
-    const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 5.0, 16);
-    camera.lookAt(0, 2.0, -8);
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4.5, 14.5);
+    camera.lookAt(0, 1.8, -8);
 
     // Ambient & Directional Lighting
-    const ambientLight = new THREE.AmbientLight(0xe0f2fe, 2.2);
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 2.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0x00d8ff, 2.8);
+    const keyLight = new THREE.DirectionalLight(0x00d8ff, 3.4);
     keyLight.position.set(12, 18, 10);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x0284c7, 1.6);
+    const fillLight = new THREE.DirectionalLight(0x0284c7, 2.0);
     fillLight.position.set(-12, -4, 6);
     scene.add(fillLight);
+
+    // Glowing Cyan Datacenter Corridor Point Lights
+    const leftAisleLight = new THREE.PointLight(0x00d8ff, 3.8, 35);
+    leftAisleLight.position.set(-5, 4.5, -2);
+    scene.add(leftAisleLight);
+
+    const rightAisleLight = new THREE.PointLight(0x00d8ff, 3.8, 35);
+    rightAisleLight.position.set(5, 4.5, -2);
+    scene.add(rightAisleLight);
 
     // Datacenter Cluster Group
     const datacenterGroup = new THREE.Group();
     scene.add(datacenterGroup);
 
-    // Reusable Materials (Modern luminous cloud datacenter - never opaque black)
+    // Reusable Materials (Crisp, High-Tech Server Chassis with Glowing Cyan Edges)
     const rackMat = new THREE.MeshStandardMaterial({
-      color: 0x162c4a,
-      metalness: 0.75,
-      roughness: 0.35,
+      color: 0x061426,
+      metalness: 0.9,
+      roughness: 0.18,
       transparent: true,
-      opacity: 0.75
+      opacity: 0.96
     });
 
     const bladeMat = new THREE.MeshStandardMaterial({
-      color: 0x213e66,
-      metalness: 0.65,
-      roughness: 0.4,
-      transparent: true,
-      opacity: 0.85
+      color: 0x0e223d,
+      metalness: 0.85,
+      roughness: 0.25
     });
 
     const edgeMat = new THREE.LineBasicMaterial({
-      color: 0x00d8ff,
+      color: 0x00f0ff,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.95
     });
 
     // Server Rack Dimensions
@@ -573,34 +580,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const rackEdgeGeo = new THREE.EdgesGeometry(rackGeo);
     const bladeGeo = new THREE.BoxGeometry(1.48, 0.6, 1.7);
 
-    // Generate Parallel Rows of Datacenter Server Racks pushed to the outer sides
-    // Leaving a wide, clear 15-unit central corridor for 100% foreground text readability
+    // Generate Parallel Rows of Datacenter Server Racks
+    // Perfectly positioned to frame mobile and desktop screens
     const ledPoints = [];
     const ledColors = [];
     const serverRacks = [];
 
-    // Left Corridor & Right Corridor Server Racks (Outermost positions)
     const rackPositions = [
-      // Left outer corridor: front to back
-      { x: -7.5, z: 2 },
-      { x: -7.5, z: -3.5 },
-      { x: -7.5, z: -9 },
-      { x: -7.5, z: -14.5 },
-      { x: -7.5, z: -20 },
-      { x: -10.5, z: 0 },
-      { x: -10.5, z: -6 },
-      { x: -10.5, z: -12 },
-      { x: -10.5, z: -18 },
-      // Right outer corridor: front to back
-      { x: 7.5, z: 2 },
-      { x: 7.5, z: -3.5 },
-      { x: 7.5, z: -9 },
-      { x: 7.5, z: -14.5 },
-      { x: 7.5, z: -20 },
-      { x: 10.5, z: 0 },
-      { x: 10.5, z: -6 },
-      { x: 10.5, z: -12 },
-      { x: 10.5, z: -18 }
+      // Left aisle: front to back
+      { x: -5.0, z: 2 },
+      { x: -5.0, z: -3.5 },
+      { x: -5.0, z: -9 },
+      { x: -5.0, z: -14.5 },
+      { x: -5.0, z: -20 },
+      { x: -8.0, z: 0 },
+      { x: -8.0, z: -6 },
+      { x: -8.0, z: -12 },
+      { x: -8.0, z: -18 },
+      // Right aisle: front to back
+      { x: 5.0, z: 2 },
+      { x: 5.0, z: -3.5 },
+      { x: 5.0, z: -9 },
+      { x: 5.0, z: -14.5 },
+      { x: 5.0, z: -20 },
+      { x: 8.0, z: 0 },
+      { x: 8.0, z: -6 },
+      { x: 8.0, z: -12 },
+      { x: 8.0, z: -18 }
     ];
 
     rackPositions.forEach(pos => {
@@ -632,11 +638,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // LED Color: 70% Green, 20% Cyan, 10% Amber
           const rType = Math.random();
           if (rType < 0.65) {
-            ledColors.push(0.06, 0.75, 0.45); // Emerald Green
+            ledColors.push(0.06, 0.85, 0.48); // Vivid Emerald Green
           } else if (rType < 0.9) {
-            ledColors.push(0.0, 0.85, 1.0);  // Cyan
+            ledColors.push(0.0, 0.92, 1.0);  // High Cyan
           } else {
-            ledColors.push(0.95, 0.65, 0.1);  // Activity Amber
+            ledColors.push(1.0, 0.7, 0.1);   // Amber
           }
         }
       }
@@ -651,17 +657,17 @@ document.addEventListener('DOMContentLoaded', () => {
     ledGeo.setAttribute('color', new THREE.Float32BufferAttribute(ledColors, 3));
 
     const ledMat = new THREE.PointsMaterial({
-      size: 0.08,
+      size: 0.16,
       vertexColors: true,
       transparent: true,
-      opacity: 0.95
+      opacity: 1.0
     });
     const ledSystem = new THREE.Points(ledGeo, ledMat);
     datacenterGroup.add(ledSystem);
 
     // Floor Optical Network Bus Lines
     const lineCoords = [];
-    [-7.5, -10.5, 7.5, 10.5, -3.5, 3.5].forEach(lx => {
+    [-5.0, -8.0, 5.0, 8.0, 0].forEach(lx => {
       lineCoords.push(lx, 0.05, 6);
       lineCoords.push(lx, 0.05, -24);
     });
@@ -670,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const busMat = new THREE.LineBasicMaterial({
       color: 0x00d8ff,
       transparent: true,
-      opacity: 0.32
+      opacity: 0.45
     });
     const busLines = new THREE.LineSegments(busGeo, busMat);
     datacenterGroup.add(busLines);
@@ -681,7 +687,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const packetSpeeds = [];
 
     for (let p = 0; p < packetCount; p++) {
-      const aisleX = (Math.random() - 0.5) * 14.0;
+      const aisleX = (Math.random() - 0.5) * 10.0;
       packetPositions[p * 3] = aisleX;
       packetPositions[p * 3 + 1] = 0.1 + Math.random() * 4.5;
       packetPositions[p * 3 + 2] = 4 - Math.random() * 26;
@@ -692,41 +698,56 @@ document.addEventListener('DOMContentLoaded', () => {
     packetGeo.setAttribute('position', new THREE.BufferAttribute(packetPositions, 3));
     const packetMat = new THREE.PointsMaterial({
       color: 0x00d8ff,
-      size: 0.06,
+      size: 0.07,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.95
     });
     const packetStream = new THREE.Points(packetGeo, packetMat);
     datacenterGroup.add(packetStream);
 
     // Parallax & Scrolling Dynamics
     let targetCamX = 0;
-    let targetCamY = 5.0;
-    let targetCamZ = 16;
+    let targetCamY = 4.5;
+    let targetCamZ = 14.5;
 
     function onMouseMove(e) {
       const nx = (e.clientX / window.innerWidth - 0.5) * 2;
       const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-      targetCamX = nx * 0.9;
-      targetCamY = 5.0 - ny * 0.4;
+      targetCamX = nx * 0.8;
+      targetCamY = 4.5 - ny * 0.4;
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
     function onScroll() {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      targetCamZ = 16 - scrollRatio * 6; // Gentle smooth parallax, never crashes into racks!
-      targetCamY = 5.0 + scrollRatio * 1.2;
+      targetCamZ = 14.5 - scrollRatio * 5; // Gentle glide
+      targetCamY = 4.5 + scrollRatio * 1.0;
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
     function onResize() {
       if (!renderer || !camera) return;
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = aspect;
+
+      // On mobile screens (aspect < 1.0), widen the FOV and scale rack group so server towers flank both sides of the phone screen
+      if (aspect < 1.0) {
+        camera.fov = 76;
+        targetCamY = 4.2;
+        targetCamZ = 15.0;
+        datacenterGroup.scale.set(0.68, 0.92, 1.0);
+      } else {
+        camera.fov = 50;
+        targetCamY = 4.5;
+        targetCamZ = 14.5;
+        datacenterGroup.scale.set(1.0, 1.0, 1.0);
+      }
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
     window.addEventListener('resize', onResize);
+    onResize(); // Initial responsive setup!
 
     // Animation Loop
     let tick = 0;

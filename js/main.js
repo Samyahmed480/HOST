@@ -463,10 +463,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close on clicking any link inside drawer
+    // Smooth scrolling & close on clicking any link inside drawer
     mobileDrawer.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        closeMobileMenu();
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#') && href.length > 1) {
+          e.preventDefault();
+          closeMobileMenu();
+          setTimeout(() => {
+            const targetEl = document.querySelector(href);
+            if (targetEl) {
+              const headerOffset = 68;
+              const elPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
+              window.scrollTo({
+                top: elPos - headerOffset,
+                behavior: 'smooth'
+              });
+            }
+          }, 180);
+        } else {
+          closeMobileMenu();
+        }
       });
     });
 
@@ -523,11 +540,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0xf1f6fd, 18, 55);
+    scene.fog = new THREE.Fog(0xf1f6fd, 50, 140);
 
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 4.5, 14.5);
-    camera.lookAt(0, 1.8, -8);
+    const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4.2, 14.5);
+    camera.lookAt(0, 2.0, -8);
 
     // Ambient & Directional Lighting
     const ambientLight = new THREE.AmbientLight(0xdbeafe, 2.6);
@@ -542,12 +559,12 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.add(fillLight);
 
     // Glowing Cyan Datacenter Corridor Point Lights
-    const leftAisleLight = new THREE.PointLight(0x00d8ff, 3.8, 35);
-    leftAisleLight.position.set(-5, 4.5, -2);
+    const leftAisleLight = new THREE.PointLight(0x00d8ff, 4.2, 35);
+    leftAisleLight.position.set(-4, 4.5, -2);
     scene.add(leftAisleLight);
 
-    const rightAisleLight = new THREE.PointLight(0x00d8ff, 3.8, 35);
-    rightAisleLight.position.set(5, 4.5, -2);
+    const rightAisleLight = new THREE.PointLight(0x00d8ff, 4.2, 35);
+    rightAisleLight.position.set(4, 4.5, -2);
     scene.add(rightAisleLight);
 
     // Datacenter Cluster Group
@@ -555,24 +572,25 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.add(datacenterGroup);
 
     // Reusable Materials (Crisp, High-Tech Server Chassis with Glowing Cyan Edges)
-    const rackMat = new THREE.MeshStandardMaterial({
-      color: 0x061426,
-      metalness: 0.9,
-      roughness: 0.18,
-      transparent: true,
-      opacity: 0.96
+    const rackMat = new THREE.MeshPhongMaterial({
+      color: 0x061830,
+      specular: 0x00d8ff,
+      shininess: 45,
+      emissive: 0x020a16
     });
 
-    const bladeMat = new THREE.MeshStandardMaterial({
-      color: 0x0e223d,
-      metalness: 0.85,
-      roughness: 0.25
+    const bladeMat = new THREE.MeshPhongMaterial({
+      color: 0x0e2448,
+      specular: 0x00f0ff,
+      shininess: 60,
+      emissive: 0x041328
     });
 
     const edgeMat = new THREE.LineBasicMaterial({
       color: 0x00f0ff,
+      linewidth: 2,
       transparent: true,
-      opacity: 0.95
+      opacity: 1.0
     });
 
     // Server Rack Dimensions
@@ -588,25 +606,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rackPositions = [
       // Left aisle: front to back
-      { x: -5.0, z: 2 },
-      { x: -5.0, z: -3.5 },
-      { x: -5.0, z: -9 },
-      { x: -5.0, z: -14.5 },
-      { x: -5.0, z: -20 },
-      { x: -8.0, z: 0 },
-      { x: -8.0, z: -6 },
-      { x: -8.0, z: -12 },
-      { x: -8.0, z: -18 },
+      { x: -3.8, z: 2 },
+      { x: -3.8, z: -3.5 },
+      { x: -3.8, z: -9 },
+      { x: -3.8, z: -14.5 },
+      { x: -3.8, z: -20 },
+      { x: -6.6, z: 0 },
+      { x: -6.6, z: -6 },
+      { x: -6.6, z: -12 },
+      { x: -6.6, z: -18 },
       // Right aisle: front to back
-      { x: 5.0, z: 2 },
-      { x: 5.0, z: -3.5 },
-      { x: 5.0, z: -9 },
-      { x: 5.0, z: -14.5 },
-      { x: 5.0, z: -20 },
-      { x: 8.0, z: 0 },
-      { x: 8.0, z: -6 },
-      { x: 8.0, z: -12 },
-      { x: 8.0, z: -18 }
+      { x: 3.8, z: 2 },
+      { x: 3.8, z: -3.5 },
+      { x: 3.8, z: -9 },
+      { x: 3.8, z: -14.5 },
+      { x: 3.8, z: -20 },
+      { x: 6.6, z: 0 },
+      { x: 6.6, z: -6 },
+      { x: 6.6, z: -12 },
+      { x: 6.6, z: -18 }
     ];
 
     rackPositions.forEach(pos => {
@@ -667,7 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Floor Optical Network Bus Lines
     const lineCoords = [];
-    [-5.0, -8.0, 5.0, 8.0, 0].forEach(lx => {
+    [-3.8, -6.6, 3.8, 6.6, 0].forEach(lx => {
       lineCoords.push(lx, 0.05, 6);
       lineCoords.push(lx, 0.05, -24);
     });
@@ -731,15 +749,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const aspect = window.innerWidth / window.innerHeight;
       camera.aspect = aspect;
 
-      // On mobile screens (aspect < 1.0), widen the FOV and scale rack group so server towers flank both sides of the phone screen
+      // On mobile screens (aspect < 1.0), adapt camera & rack scaling so server towers flank the mobile screen
       if (aspect < 1.0) {
-        camera.fov = 76;
-        targetCamY = 4.2;
-        targetCamZ = 15.0;
-        datacenterGroup.scale.set(0.68, 0.92, 1.0);
+        camera.fov = 78;
+        targetCamY = 3.8;
+        targetCamZ = 13.5;
+        datacenterGroup.scale.set(0.72, 0.95, 1.0);
       } else {
-        camera.fov = 50;
-        targetCamY = 4.5;
+        camera.fov = 52;
+        targetCamY = 4.2;
         targetCamZ = 14.5;
         datacenterGroup.scale.set(1.0, 1.0, 1.0);
       }
@@ -760,7 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
       camera.position.x += (targetCamX - camera.position.x) * 0.05;
       camera.position.y += (targetCamY - camera.position.y) * 0.05;
       camera.position.z += (targetCamZ - camera.position.z) * 0.05;
-      camera.lookAt(targetCamX * 0.3, 1.2, camera.position.z - 18);
+      camera.lookAt(targetCamX * 0.3, 2.0, camera.position.z - 18);
 
       // Animate Traveling Data Packets
       const posArr = packetGeo.attributes.position.array;

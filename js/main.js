@@ -414,125 +414,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Component #4: Interactive Terminal Code Switcher ---
-  const terminalTabs = document.querySelectorAll('.terminal-tab-btn');
-  const terminalCodeBlock = document.getElementById('terminalCodeBlock');
-  const terminalSnippetTitle = document.getElementById('terminalSnippetTitle');
-
-  const terminalSnippets = {
-    docker: {
-      title: 'docker-compose.yml - الإنتاج الآمن لـ n8n',
-      code: `<span class="code-comment"># ملف تشغيل n8n مع PostgreSQL و Traefik Reverse Proxy و SSL</span>
-<span class="code-keyword">version:</span> <span class="code-string">'3.8'</span>
-
-<span class="code-keyword">services:</span>
-  <span class="code-variable">postgres:</span>
-    <span class="code-keyword">image:</span> <span class="code-string">postgres:16-alpine</span>
-    <span class="code-keyword">restart:</span> always
-    <span class="code-keyword">environment:</span>
-      - POSTGRES_USER=egyhost_user
-      - POSTGRES_PASSWORD=\${DB_SECRET_KEY}
-      - POSTGRES_DB=n8n_production
-    <span class="code-keyword">volumes:</span>
-      - postgres_storage:/var/lib/postgresql/data
-
-  <span class="code-variable">n8n_engine:</span>
-    <span class="code-keyword">image:</span> <span class="code-string">docker.n8n.io/n8nio/n8n:latest</span>
-    <span class="code-keyword">restart:</span> always
-    <span class="code-keyword">ports:</span>
-      - <span class="code-string">"5678:5678"</span>
-    <span class="code-keyword">environment:</span>
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=postgres
-      - N8N_HOST=automation.yourdomain.com
-      - WEBHOOK_URL=https://automation.yourdomain.com/
-      - EXECUTIONS_DATA_PRUNE=true
-      - EXECUTIONS_DATA_MAX_AGE=168
-    <span class="code-keyword">depends_on:</span>
-      - postgres
-    <span class="code-keyword">volumes:</span>
-      - n8n_data:/home/node/.n8n
-
-<span class="code-keyword">volumes:</span>
-  <span class="code-variable">postgres_storage:</span>
-  <span class="code-variable">n8n_data:</span>`
-    },
-    webhook: {
-      title: 'cURL Webhook Trigger - اختبار وصول الويب هوك اللحظي',
-      code: `<span class="code-comment"># تجربة إرسال Webhook مباشر لسيرفر n8n واستقبال الرد الفوري</span>
-<span class="code-keyword">curl</span> -X POST https://automation.yourdomain.com/webhook/test-order \\
-  -H <span class="code-string">"Content-Type: application/json"</span> \\
-  -H <span class="code-string">"X-EGYHOST-Token: sec_live_9942a7b8e"</span> \\
-  -d <span class="code-string">'{
-    "event": "new_transaction",
-    "customer": {
-      "name": "محمود عادل",
-      "phone": "+201012345678",
-      "method": "InstaPay"
-    },
-    "amount_egp": 750.00,
-    "status": "APPROVED",
-    "timestamp": 1729367890
-  }'</span>`
-    },
-    benchmark: {
-      title: 'YABS & Geekbench - أداء المعالجات وسرعة NVMe',
-      code: `<span class="code-comment"># فحص سرعة القراءة والكتابة وعزم النواة للسيرفر</span>
-<span class="code-keyword">curl</span> -sL yabs.sh | bash -s -- -i -g
-
-<span class="code-comment">------------------------------------------------------------------
- CPU Model          : AMD EPYC 9654 96-Core Processor @ 3.70GHz
- CPU Cores          : 4 vCPU
- RAM Size           : 8.0 GB DDR5 ECC
- Disk Speed (fio)   : 4k Read: 840 MB/s | 4k Write: 790 MB/s
- Network 10Gbps     : Cairo IX: 9.8 Gbps (8ms) | Frankfurt: 9.4 Gbps (46ms)
-------------------------------------------------------------------</span>`
-    },
-    api: {
-      title: 'REST API Provisioning - إطلاق السيرفرات برمجياً',
-      code: `<span class="code-comment"># إنشاء سيرفر VPS سحابي جديد مع تثبيت n8n عبر واجهة برمجة التطبيقات</span>
-<span class="code-keyword">curl</span> -X POST https://api.egyhost.cloud/v1/servers/deploy \\
-  -H <span class="code-string">"Authorization: Bearer egy_live_key_93184"</span> \\
-  -H <span class="code-string">"Content-Type: application/json"</span> \\
-  -d <span class="code-string">'{
-    "region": "cairo-eg1",
-    "image": "n8n-ubuntu-24-04-lts",
-    "plan": "n8n-pro-4cpu",
-    "hostname": "prod-n8n-cluster.app",
-    "ssh_key_ids": ["ssh_key_cai_829"],
-    "backups": true
-  }'</span>`
-    }
-  };
-
-  terminalTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      terminalTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const snippetKey = tab.getAttribute('data-snippet');
-      const data = terminalSnippets[snippetKey];
-      if (data && terminalCodeBlock) {
-        terminalSnippetTitle.textContent = data.title;
-        terminalCodeBlock.innerHTML = data.code;
-      }
-    });
-  });
-
   // --- Copy To Clipboard Buttons ---
   document.querySelectorAll('[data-copy-target]').forEach(btn => {
     btn.addEventListener('click', () => {
       const targetSelector = btn.getAttribute('data-copy-target');
-      let textToCopy = '';
-      if (targetSelector === '#terminalCodeBlock') {
-        textToCopy = terminalCodeBlock.innerText;
-      } else {
-        const el = document.querySelector(targetSelector);
-        textToCopy = el ? el.innerText : '';
-      }
+      const el = document.querySelector(targetSelector);
+      const textToCopy = el ? el.innerText : '';
 
-      if (navigator.clipboard) {
+      if (navigator.clipboard && textToCopy) {
         navigator.clipboard.writeText(textToCopy).then(() => {
-          showToast('تم نسخ الكود بنجاح إلى الحافظة!');
+          showToast('تم نسخ المحتوى بنجاح إلى الحافظة!');
         });
       }
     });

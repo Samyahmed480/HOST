@@ -455,28 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Live Latency Test Simulator ---
-  const pingVals = document.querySelectorAll('.node-ping-val');
-  const btnRetestPing = document.getElementById('btnRetestPing');
-
-  function simulatePing() {
-    pingVals.forEach(val => {
-      const base = parseInt(val.getAttribute('data-base-ping') || '25');
-      val.textContent = '...';
-      setTimeout(() => {
-        const jitter = Math.floor(Math.random() * 5) - 2;
-        const currentPing = Math.max(5, base + jitter);
-        val.textContent = `${currentPing} ms`;
-      }, 400 + Math.random() * 600);
-    });
-  }
-
-  if (btnRetestPing) {
-    btnRetestPing.addEventListener('click', () => {
-      simulatePing();
-      showToast('جارٍ اختبار زمن الاستجابة لمراكز البيانات...');
-    });
-  }
 
   // --- Deployment / Checkout Modal Logic ---
   const deployModal = document.getElementById('deployModal');
@@ -562,5 +540,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial runs
   renderPricingCards();
   updateCalculator();
-  simulatePing();
 });

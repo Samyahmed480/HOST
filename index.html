@@ -125,67 +125,128 @@
           </div>
         </div>
 
-        <!-- Hero Telemetry Live Status Card -->
+        <!-- Hero Interactive Showcase Card (Three.js 3D & Telemetry) -->
         <div class="hero-card-stack">
-          <div class="telemetry-preview-card">
-            <div class="card-top-accent"></div>
-            <div class="telemetry-card-header">
-              <div class="server-identity">
-                <span class="status-indicator-live"></span>
-                <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">cai-node01.egyhost.cloud</span>
+          <!-- View Switcher Tabs (Apple Style) -->
+          <div class="hero-view-tabs" role="tablist">
+            <button class="hero-view-tab-btn active" id="tabBtn3D" data-view="3d">
+              <span>🔮</span>
+              <span>المجسم السحابي 3D</span>
+            </button>
+            <button class="hero-view-tab-btn" id="tabBtnTelemetry" data-view="telemetry">
+              <span>📊</span>
+              <span>القياسات الحية</span>
+            </button>
+          </div>
+
+          <!-- 3D Three.js Interactive View -->
+          <div id="view3dContainer" class="hero-interactive-view active">
+            <div class="telemetry-preview-card three-card-box">
+              <div class="card-top-accent"></div>
+              <div class="telemetry-card-header">
+                <div class="server-identity">
+                  <span class="status-indicator-live"></span>
+                  <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">Three.js WebGL Cluster Core</span>
+                </div>
+                <span class="label-badge" style="background: rgba(0, 216, 255, 0.15); color: #0284c7; font-family: var(--font-mono); font-weight: 600;">
+                  60 FPS • Interactive 3D
+                </span>
               </div>
-              <span class="label-badge" style="background: rgba(5, 150, 105, 0.12); color: var(--metric-success);">
-                Active Quota: 85%
-              </span>
+
+              <!-- 3D Canvas Viewport -->
+              <div class="three-canvas-wrapper" id="threeCanvasWrapper">
+                <canvas id="egyhostThreeCanvas"></canvas>
+                
+                <!-- 3D Interactive Hint -->
+                <div class="three-hint-badge">
+                  <span>🖱️ اسحب للتدوير ثلاثي الأبعاد • انقر لنبض البيانات</span>
+                </div>
+              </div>
+
+              <!-- 3D Interactive Controls -->
+              <div class="three-controls-bar">
+                <button type="button" class="three-ctrl-btn active" id="btnThreeRotate" title="تشغيل/إيقاف الدوران التلقائي">
+                  <span>🔄 تدوير تلقائي</span>
+                </button>
+                <button type="button" class="three-ctrl-btn" id="btnThreeBurst" title="إرسال دفعة بيانات تفاعلية">
+                  <span>⚡ نبض البيانات</span>
+                </button>
+                <button type="button" class="three-ctrl-btn" id="btnThreeReset" title="إعادة ضبط زاوية الرؤية">
+                  <span>🌐 إعادة الزاوية</span>
+                </button>
+              </div>
+
+              <!-- 3D Card Footer Meta -->
+              <div class="three-footer-meta">
+                <span>🇪🇬 Cairo Node (EG-IX)</span>
+                <span>Latency: <strong>&lt; 8ms</strong></span>
+                <span>n8n Core: <strong>Active</strong></span>
+              </div>
             </div>
+          </div>
 
-            <div class="telemetry-card-body">
-              <!-- CPU Gauge -->
-              <div class="metric-gauge-group">
-                <div class="metric-gauge-header">
-                  <span>AMD EPYC Compute (vCPU Load)</span>
-                  <span class="ltr-force">32% / 4.2 GHz</span>
+          <!-- Live Telemetry View -->
+          <div id="viewTelemetryContainer" class="hero-interactive-view">
+            <div class="telemetry-preview-card">
+              <div class="card-top-accent"></div>
+              <div class="telemetry-card-header">
+                <div class="server-identity">
+                  <span class="status-indicator-live"></span>
+                  <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">cai-node01.egyhost.cloud</span>
                 </div>
-                <div class="metric-gauge-bar">
-                  <div class="metric-gauge-fill" style="width: 32%;"></div>
-                </div>
+                <span class="label-badge" style="background: rgba(5, 150, 105, 0.12); color: var(--metric-success);">
+                  Active Quota: 85%
+                </span>
               </div>
 
-              <!-- RAM Gauge -->
-              <div class="metric-gauge-group">
-                <div class="metric-gauge-header">
-                  <span>DDR5 Memory Allocation</span>
-                  <span class="ltr-force">3.4 GB / 8.0 GB (42%)</span>
+              <div class="telemetry-card-body">
+                <!-- CPU Gauge -->
+                <div class="metric-gauge-group">
+                  <div class="metric-gauge-header">
+                    <span>AMD EPYC Compute (vCPU Load)</span>
+                    <span class="ltr-force">32% / 4.2 GHz</span>
+                  </div>
+                  <div class="metric-gauge-bar">
+                    <div class="metric-gauge-fill" style="width: 32%;"></div>
+                  </div>
                 </div>
-                <div class="metric-gauge-bar">
-                  <div class="metric-gauge-fill" style="width: 42%;"></div>
-                </div>
-              </div>
 
-              <!-- Storage Gauge -->
-              <div class="metric-gauge-group">
-                <div class="metric-gauge-header">
-                  <span>NVMe Gen4 IOPS &amp; Quota</span>
-                  <span class="ltr-force">18.5 GB / 100 GB</span>
+                <!-- RAM Gauge -->
+                <div class="metric-gauge-group">
+                  <div class="metric-gauge-header">
+                    <span>DDR5 Memory Allocation</span>
+                    <span class="ltr-force">3.4 GB / 8.0 GB (42%)</span>
+                  </div>
+                  <div class="metric-gauge-bar">
+                    <div class="metric-gauge-fill" style="width: 42%;"></div>
+                  </div>
                 </div>
-                <div class="metric-gauge-bar">
-                  <div class="metric-gauge-fill" style="width: 18.5%;"></div>
-                </div>
-              </div>
 
-              <!-- Telemetry Metrics Grid -->
-              <div class="mini-telemetry-grid">
-                <div class="mini-telemetry-item">
-                  <span class="label">زمن الاستجابة</span>
-                  <span class="value ltr-force" style="color: var(--metric-success);">8.2 ms</span>
+                <!-- Storage Gauge -->
+                <div class="metric-gauge-group">
+                  <div class="metric-gauge-header">
+                    <span>NVMe Gen4 IOPS &amp; Quota</span>
+                    <span class="ltr-force">18.5 GB / 100 GB</span>
+                  </div>
+                  <div class="metric-gauge-bar">
+                    <div class="metric-gauge-fill" style="width: 18.5%;"></div>
+                  </div>
                 </div>
-                <div class="mini-telemetry-item">
-                  <span class="label">معدل الـ Webhooks</span>
-                  <span class="value ltr-force" style="color: var(--secondary);">148 req/s</span>
-                </div>
-                <div class="mini-telemetry-item">
-                  <span class="label">حالة n8n Daemon</span>
-                  <span class="value ltr-force" style="color: var(--metric-success);">RUNNING</span>
+
+                <!-- Telemetry Metrics Grid -->
+                <div class="mini-telemetry-grid">
+                  <div class="mini-telemetry-item">
+                    <span class="label">زمن الاستجابة</span>
+                    <span class="value ltr-force" style="color: var(--metric-success);">&lt; 8.2 ms</span>
+                  </div>
+                  <div class="mini-telemetry-item">
+                    <span class="label">معدل الـ Webhooks</span>
+                    <span class="value ltr-force" style="color: var(--secondary);">148 req/s</span>
+                  </div>
+                  <div class="mini-telemetry-item">
+                    <span class="label">حالة n8n Daemon</span>
+                    <span class="value ltr-force" style="color: var(--metric-success);">RUNNING</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -803,7 +864,8 @@
     <span class="toast-text">تمت العملية بنجاح!</span>
   </div>
 
-  <!-- JavaScript -->
+  <!-- JavaScript (Vendor Three.js & Main Core) -->
+  <script src="js/vendor/three.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

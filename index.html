@@ -52,7 +52,6 @@
           <ul class="nav-links">
             <li><a href="#n8n-plans" class="nav-link active">سحابة n8n للأتمتة</a></li>
             <li><a href="#vps-plans" class="nav-link">سيرفرات الـ VPS</a></li>
-            <li><a href="#pipeline" class="nav-link">خط التجهيز الآلي</a></li>
             <li><a href="#calculator" class="nav-link">حاسبة الموارد</a></li>
             <li><a href="#templates" class="nav-link">قوالب الأتمتة</a></li>
             <li><a href="about.html" class="nav-link">من نحن</a></li>
@@ -253,115 +252,6 @@
     </div>
   </section>
 
-  <!-- Component #1: Provisioning Pipeline Steps -->
-  <section id="pipeline" class="provisioning-section">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-subtitle">AUTOMATED DEVOPS ORCHESTRATION</span>
-        <h2 class="headline-lg section-title">خط التجهيز الآلي للسيرفر الفوري (Instant Provisioning Sequence)</h2>
-        <p class="body-lg">
-          شاهد الآلية الهندسية التي تدير إطلاق سيرفراتك. فور تأكيد طلبك، تتولى خوارزمياتنا السحابية عزل الموارد، نشر الحاويات، تهيئة قواعد البيانات، وإصدار شهادات الأمان تلقائياً خلال 30 ثانية.
-        </p>
-      </div>
-
-      <div class="pipeline-wrapper">
-        <div class="pipeline-controls">
-          <div>
-            <h3 class="headline-sm" style="margin-bottom: 4px;">محاكي تسلسل إطلاق بيئة n8n و VPS</h3>
-            <p class="body-sm">انقر على الزر لتشغيل محاكاة حية لنشر سيرفر جديد ومتابعة المخرجات البرمجية لحظة بلحظة</p>
-          </div>
-          <button id="btnStartSimulation" class="btn btn-primary">
-            <span>بدء المحاكاة التفاعلية</span>
-            <span>▶</span>
-          </button>
-        </div>
-
-        <!-- Steps Cards Sequence -->
-        <div class="pipeline-steps-container">
-          <!-- Step 1 -->
-          <div class="pipeline-step-card state-done">
-            <div class="step-card-header">
-              <span class="step-num-pill">01</span>
-              <span class="step-status-tag">مكتمل</span>
-            </div>
-            <h4 class="step-title">عزل الموارد والمستخدم</h4>
-            <span class="step-mechanism ltr-force">Linux User &amp; Cgroups</span>
-            <p class="step-desc">إنشاء بيئة مستخدم معزولة، ضبط حدود استهلاك الرام والمعالج، وتهيئة وحدة تخزين NVMe.</p>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="pipeline-step-card state-active">
-            <div class="step-card-header">
-              <span class="step-num-pill">02</span>
-              <span class="step-status-tag">نشط الآن</span>
-            </div>
-            <h4 class="step-title">تشغيل محرك n8n</h4>
-            <span class="step-mechanism ltr-force">Docker Engine &amp; Daemon</span>
-            <p class="step-desc">سحب صورة n8n الأحدث وتفعيل وضع الـ Workers مع دعم خطافات الويب (Webhooks).</p>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="pipeline-step-card state-pending">
-            <div class="step-card-header">
-              <span class="step-num-pill">03</span>
-              <span class="step-status-tag">في الانتظار</span>
-            </div>
-            <h4 class="step-title">البروكسي العكسي وSSL</h4>
-            <span class="step-mechanism ltr-force">Traefik / Nginx Vhost</span>
-            <p class="step-desc">توجيه الدومين وإصدار وتثبيت شهادة تشفير SSL تلقائية من Let's Encrypt بتصنيف A+.</p>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="pipeline-step-card state-pending">
-            <div class="step-card-header">
-              <span class="step-num-pill">04</span>
-              <span class="step-status-tag">في الانتظار</span>
-            </div>
-            <h4 class="step-title">قاعدة البيانات والطابور</h4>
-            <span class="step-mechanism ltr-force">PostgreSQL 16 &amp; Redis</span>
-            <p class="step-desc">ربط وتجهيز قاعدة بيانات Postgres وتفعيل طابور Redis لمعالجة آلاف المهام المتزامنة.</p>
-          </div>
-
-          <!-- Step 5 -->
-          <div class="pipeline-step-card state-pending">
-            <div class="step-card-header">
-              <span class="step-num-pill">05</span>
-              <span class="step-status-tag">في الانتظار</span>
-            </div>
-            <h4 class="step-title">فحص الأمان وجاهزية IP</h4>
-            <span class="step-mechanism ltr-force">Firewall &amp; Healthcheck</span>
-            <p class="step-desc">تفعيل جدار الحماية UFW، حجب الهجمات، وربط الـ IP المخصص بشبكة الـ 10Gbps.</p>
-          </div>
-        </div>
-
-        <!-- Live Terminal Box Output -->
-        <div class="pipeline-terminal-box">
-          <div class="terminal-header-bar">
-            <div class="terminal-window-controls">
-              <span class="win-dot dot-red"></span>
-              <span class="win-dot dot-yellow"></span>
-              <span class="win-dot dot-green"></span>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 11px; color: #9ca3af;" class="ltr-force">
-              root@hypervisor-orchestrator:~# provision-daemon --target=n8n-cluster
-            </span>
-            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cloud-cyan-bright);">LIVE LOG STREAM</span>
-          </div>
-
-          <div id="pipelineConsole" class="terminal-log-content ltr-force">
-            <div class="log-line">
-              <span class="log-time">00:00</span>
-              <span class="log-msg-cyan">[READY] Orchestration daemon initialized. Waiting for provisioning trigger...</span>
-            </div>
-            <div class="log-line">
-              <span class="log-time">00:00</span>
-              <span>[INFO] Node telemetry: CPU Temp 38°C | NVMe IOPS healthy | Uplink: 10Gbps redundant</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Plans & Pricing Section -->
   <section id="n8n-plans" class="plans-section">
@@ -742,7 +632,7 @@
             <li><a href="#vps-plans">سيرفرات Cloud VPS</a></li>
             <li><a href="#calculator">حاسبة الموارد المخصصة</a></li>
             <li><a href="#templates">قوالب الأتمتة الجاهزة</a></li>
-            <li><a href="#pipeline">محاكي التجهيز الآلي</a></li>
+            <li><a href="#hero">لوحة قياس الأداء الحية</a></li>
           </ul>
         </div>
 
@@ -753,7 +643,7 @@
             <li><a href="about.html">من نحن (عن EGYHOST)</a></li>
             <li><a href="privacy.html">سياسة الخصوصية</a></li>
             <li><a href="about.html#guarantee">ضمان استرجاع الأموال 30 يوماً</a></li>
-            <li><a href="#pipeline">نظام النشر الآلي الفوري</a></li>
+            <li><a href="about.html">ترخيص الشركة وبياناتها</a></li>
             <li><a href="#hero">اتفاقية مستوى الخدمة SLA 99.99%</a></li>
           </ul>
         </div>

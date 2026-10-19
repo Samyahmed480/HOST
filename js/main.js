@@ -344,75 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Component #1: Provisioning Pipeline Steps Simulator ---
-  const btnStartSimulation = document.getElementById('btnStartSimulation');
-  const pipelineConsole = document.getElementById('pipelineConsole');
-  const stepCards = document.querySelectorAll('.pipeline-step-card');
-  let simulationRunning = false;
-
-  const simulationLogs = [
-    { time: '00:01', msg: '[INFO] Initializing hypervisor allocation on Node-CAI-04...', class: 'log-msg-cyan', stepIndex: 0 },
-    { time: '00:03', msg: '[KERNEL] Provisioning isolated Linux cgroup & non-root user (uid=1001)...', class: '', stepIndex: 0 },
-    { time: '00:06', msg: '[SUCCESS] Storage volume formatted with XFS filesystem and mounted at /data', class: 'log-msg-success', stepIndex: 0 },
-    { time: '00:09', msg: '[DOCKER] Spawning n8n enterprise container daemon (image: n8nio/n8n:1.65.2)...', class: 'log-msg-cyan', stepIndex: 1 },
-    { time: '00:13', msg: '[HEALTH] n8n core initialized. Webhook listener active on port :5678', class: 'log-msg-success', stepIndex: 1 },
-    { time: '00:16', msg: '[SECURITY] Requesting Let\'s Encrypt wildcard SSL certificate via ACME DNS-01...', class: 'log-msg-cyan', stepIndex: 2 },
-    { time: '00:20', msg: '[SSL] TLS v1.3 certificate signed and provisioned for *.egyhost.cloud [A+ Rating]', class: 'log-msg-success', stepIndex: 2 },
-    { time: '00:24', msg: '[DATABASE] PostgreSQL 16 cluster attached & Redis 7.2 queue broker primed', class: 'log-msg-cyan', stepIndex: 3 },
-    { time: '00:27', msg: '[NETWORK] BGP router routing IP 197.168.42.10 via EG-IX local gateway (<8ms latency)', class: 'log-msg-success', stepIndex: 4 },
-    { time: '00:30', msg: '[DONE] Instance ready! URL: https://n8n-instance-382.egyhost.cloud [Ready for Webhooks]', class: 'log-msg-success', stepIndex: 4 }
-  ];
-
-  if (btnStartSimulation && pipelineConsole) {
-    btnStartSimulation.addEventListener('click', () => {
-      if (simulationRunning) return;
-      simulationRunning = true;
-      btnStartSimulation.disabled = true;
-      btnStartSimulation.innerHTML = `<span>جارٍ التجهيز الآلي...</span> <span class="live-pulse-dot"></span>`;
-      pipelineConsole.innerHTML = '';
-
-      stepCards.forEach((c) => {
-        c.className = 'pipeline-step-card state-pending';
-      });
-
-      let currentStep = -1;
-      let logIndex = 0;
-
-      const logInterval = setInterval(() => {
-        if (logIndex < simulationLogs.length) {
-          const item = simulationLogs[logIndex];
-          
-          const line = document.createElement('div');
-          line.className = 'log-line';
-          line.innerHTML = `<span class="log-time">${item.time}</span><span class="${item.class}">${item.msg}</span>`;
-          pipelineConsole.appendChild(line);
-          pipelineConsole.scrollTop = pipelineConsole.scrollHeight;
-
-          if (item.stepIndex !== currentStep) {
-            currentStep = item.stepIndex;
-            stepCards.forEach((card, idx) => {
-              if (idx < currentStep) {
-                card.className = 'pipeline-step-card state-done';
-              } else if (idx === currentStep) {
-                card.className = 'pipeline-step-card state-active';
-              } else {
-                card.className = 'pipeline-step-card state-pending';
-              }
-            });
-          }
-
-          logIndex++;
-        } else {
-          clearInterval(logInterval);
-          stepCards.forEach(card => card.className = 'pipeline-step-card state-done');
-          btnStartSimulation.disabled = false;
-          btnStartSimulation.innerHTML = `<span>إعادة تشغيل المحاكاة</span> <span>↻</span>`;
-          simulationRunning = false;
-          showToast('اكتمل تجهيز السيرفر الفوري بنجاح في أقل من 30 ثانية!');
-        }
-      }, 700);
-    });
-  }
 
   // --- Copy To Clipboard Buttons ---
   document.querySelectorAll('[data-copy-target]').forEach(btn => {
@@ -558,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Apple Scroll-Driven Entrance Animation System ---
   const revealTargets = document.querySelectorAll(
-    '.kpi-card, .pricing-card, .template-card, .pipeline-step-card, .faq-item, .section-head, .calc-card-container, .service-card, .guarantee-banner-box'
+    '.kpi-card, .pricing-card, .template-card, .faq-item, .section-head, .calc-card-container, .service-card, .guarantee-banner-box'
   );
 
   revealTargets.forEach((el) => {

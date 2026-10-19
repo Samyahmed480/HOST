@@ -59,8 +59,8 @@
           <ul class="nav-links">
             <li><a href="#n8n-plans" class="nav-link active">سحابة n8n للأتمتة</a></li>
             <li><a href="#vps-plans" class="nav-link">سيرفرات الـ VPS</a></li>
-            <li><a href="#calculator" class="nav-link">حاسبة الموارد</a></li>
             <li><a href="#templates" class="nav-link">قوالب الأتمتة</a></li>
+            <li><a href="#faq" class="nav-link">الأسئلة الشائعة</a></li>
             <li><a href="about.html" class="nav-link">من نحن</a></li>
             <li><a href="privacy.html" class="nav-link">الخصوصية</a></li>
           </ul>
@@ -74,7 +74,7 @@
             <button class="currency-btn" data-currency="USD">USD $</button>
           </div>
 
-          <a href="#calculator" class="btn btn-secondary btn-sm">تخصيص الموارد</a>
+          <a href="#vps-plans" class="btn btn-secondary btn-sm">سيرفرات VPS</a>
           <a href="#n8n-plans" class="btn btn-accent btn-sm">
             <span>ابدأ الآن</span>
             <span>←</span>
@@ -88,189 +88,49 @@
   <section id="hero" class="hero-section">
     <div class="ambient-glow-cyan" style="top: 10%; right: 5%;"></div>
     <div class="container">
-      <div class="hero-grid">
-        <!-- Hero Text Content -->
-        <div>
-          <div class="hero-badge-row">
-            <span class="label-badge hero-badge">
-              <span class="live-pulse-dot" style="background-color: var(--metric-success); box-shadow: 0 0 6px var(--metric-success);"></span>
-              <span>شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636)</span>
-            </span>
-            <span class="label-badge hero-badge hero-badge-cyan">
-              <span>n8n v1.65+ Pre-configured &amp; AI Nodes</span>
-            </span>
-          </div>
-
-          <h1 class="display-hero hero-title">
-            بنية تحتية سحابية هندسية فائقة السرعة لسيرفرات <span class="text-gradient">VPS واستضافة n8n</span> للأتمتة والذكاء الاصطناعي
-          </h1>
-
-          <p class="body-lg hero-description">
-            امتلك سيرفرك السحابي المستقل مع أتمتة n8n غير المحدودة. لا قيود على عدد التشغيلات (Unlimited Executions)، سرعات خارقة مع معالجات AMD EPYC وأقراص NVMe Gen4، وتجهيز آلي كامل في أقل من 45 ثانية مع دعم الدفع المحلي (فودافون كاش وإنستاباي) وضمان استرداد 30 يوماً.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#n8n-plans" class="btn btn-accent btn-lg">
-              <span>تصفح سيرفرات n8n المُدارة</span>
-              <span style="font-size: 18px;">←</span>
-            </a>
-            <a href="#calculator" class="btn btn-secondary btn-lg">
-              <span>حاسبة السيرفر المخصص</span>
-            </a>
-          </div>
-
-          <!-- Hero Quick CLI Deployment Snippet -->
-          <div class="hero-quick-terminal">
-            <div class="quick-terminal-command ltr-force">
-              <span class="terminal-prompt-symbol">$</span>
-              <span id="heroTerminalCmd">curl -sSL https://get.egyhost.cloud/deploy-n8n.sh | bash</span>
-            </div>
-            <button class="copy-mini-btn" id="heroCopyBtn" title="نسخ الأمر">
-              <span>نسخ</span>
-              <span>📋</span>
-            </button>
-          </div>
+      <div class="hero-content-centered">
+        <div class="hero-badge-row">
+          <span class="label-badge hero-badge">
+            <span class="live-pulse-dot" style="background-color: var(--metric-success); box-shadow: 0 0 6px var(--metric-success);"></span>
+            <span>شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636)</span>
+          </span>
+          <span class="label-badge hero-badge hero-badge-cyan">
+            <span>n8n v1.65+ Pre-configured &amp; AI Nodes</span>
+          </span>
         </div>
 
-        <!-- Hero Interactive Showcase Card (ThreeUI & Telemetry) -->
-        <div class="hero-card-stack">
-          <!-- View Switcher Tabs (ThreeUI / Apple Style) -->
-          <div class="hero-view-tabs" role="tablist">
-            <button class="hero-view-tab-btn active" id="tabBtn3D" data-view="3d">
-              <span>🔮</span>
-              <span>مجسم ThreeUI السحابي</span>
-            </button>
-            <button class="hero-view-tab-btn" id="tabBtnTelemetry" data-view="telemetry">
-              <span>📊</span>
-              <span>القياسات الحية</span>
-            </button>
+        <h1 class="display-hero hero-title">
+          بنية تحتية سحابية هندسية فائقة السرعة لسيرفرات <span class="text-gradient">VPS واستضافة n8n</span> للأتمتة والذكاء الاصطناعي
+        </h1>
+
+        <p class="body-lg hero-description">
+          امتلك سيرفرك السحابي المستقل مع أتمتة n8n غير المحدودة. لا قيود على عدد التشغيلات (Unlimited Executions)، سرعات خارقة مع معالجات AMD EPYC وأقراص NVMe Gen4، وتجهيز آلي كامل في أقل من 45 ثانية مع دعم الدفع المحلي (فودافون كاش وإنستاباي) وضمان استرداد 30 يوماً.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#n8n-plans" class="btn btn-accent btn-lg">
+            <span>تصفح سيرفرات n8n المُدارة</span>
+            <span style="font-size: 18px;">←</span>
+          </a>
+          <a href="#vps-plans" class="btn btn-secondary btn-lg">
+            <span>تصفح سيرفرات VPS السحابية</span>
+          </a>
+        </div>
+
+        <!-- Hero Quick CLI Deployment Snippet -->
+        <div class="hero-quick-terminal">
+          <div class="quick-terminal-command ltr-force">
+            <span class="terminal-prompt-symbol">$</span>
+            <span id="heroTerminalCmd">curl -sSL https://get.egyhost.cloud/deploy-n8n.sh | bash</span>
           </div>
-
-          <!-- ThreeUI Interactive View (https://threeui.com) -->
-          <div id="view3dContainer" class="hero-interactive-view active">
-            <div class="telemetry-preview-card three-card-box threeui-card-box">
-              <div class="card-top-accent"></div>
-              <div class="telemetry-card-header threeui-card-header">
-                <div class="server-identity">
-                  <span class="threeui-mark-icon" title="ThreeUI Engine (threeui.com)">
-                    <svg viewBox="0 0 512 512" width="20" height="20" fill="currentColor">
-                      <circle cx="256" cy="256" r="208" fill="#00d8ff" opacity="0.2"/>
-                      <path d="M36 178C112 252 184 264 260 196C336 128 404 114 482 180" stroke="#00d8ff" stroke-width="32" fill="none" stroke-linecap="round"/>
-                      <path d="M36 292C112 366 184 378 260 310C336 242 404 228 482 294" stroke="#00d8ff" stroke-width="32" fill="none" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                  <span style="font-family: 'JetBrains Mono', var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">ThreeUI Aureon Infrastructure Rotor</span>
-                </div>
-                <a href="https://threeui.com" target="_blank" rel="noopener" class="label-badge threeui-badge" title="زيارة وثائق ThreeUI الرسمية">
-                  threeui.com • 60 FPS
-                </a>
-              </div>
-
-              <!-- ThreeUI 3D Canvas Viewport -->
-              <div class="three-canvas-wrapper" id="threeCanvasWrapper">
-                <canvas id="egyhostThreeCanvas"></canvas>
-                
-                <!-- ThreeUI Interactive Overlay Hint -->
-                <div class="three-hint-badge">
-                  <span>🖱️ اسحب للتدوير ثلاثي الأبعاد • انقر لتسريع دوران التوربين</span>
-                </div>
-
-                <!-- ThreeUI Watermark -->
-                <div class="threeui-watermark">
-                  <span>Powered by <strong>ThreeUI</strong></span>
-                </div>
-              </div>
-
-              <!-- ThreeUI Interactive Controls Bar -->
-              <div class="three-controls-bar threeui-controls-bar">
-                <button type="button" class="three-ctrl-btn active" id="btnThreeRotate" title="تشغيل/إيقاف دوران المحرك التلقائي">
-                  <span>🔄 دوران تلقائي</span>
-                </button>
-                <button type="button" class="three-ctrl-btn" id="btnThreeBurst" title="تسريع نبض التوربين التدفقي">
-                  <span>⚡ تسريع التوربين</span>
-                </button>
-                <button type="button" class="three-ctrl-btn" id="btnThreeReset" title="إعادة ضبط زاوية الرؤية">
-                  <span>🌐 إعادة الزاوية</span>
-                </button>
-              </div>
-
-              <!-- ThreeUI Footer Meta Readout -->
-              <div class="three-footer-meta threeui-footer-meta">
-                <span>🇪🇬 Cairo Node (EG-IX)</span>
-                <span>Asset: <strong>Aureon Rotor v1.2</strong></span>
-                <span>Latency: <strong>&lt; 8ms</strong></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Live Telemetry View -->
-          <div id="viewTelemetryContainer" class="hero-interactive-view">
-            <div class="telemetry-preview-card">
-              <div class="card-top-accent"></div>
-              <div class="telemetry-card-header">
-                <div class="server-identity">
-                  <span class="status-indicator-live"></span>
-                  <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--primary);">cai-node01.egyhost.cloud</span>
-                </div>
-                <span class="label-badge" style="background: rgba(5, 150, 105, 0.12); color: var(--metric-success);">
-                  Active Quota: 85%
-                </span>
-              </div>
-
-              <div class="telemetry-card-body">
-                <!-- CPU Gauge -->
-                <div class="metric-gauge-group">
-                  <div class="metric-gauge-header">
-                    <span>AMD EPYC Compute (vCPU Load)</span>
-                    <span class="ltr-force">32% / 4.2 GHz</span>
-                  </div>
-                  <div class="metric-gauge-bar">
-                    <div class="metric-gauge-fill" style="width: 32%;"></div>
-                  </div>
-                </div>
-
-                <!-- RAM Gauge -->
-                <div class="metric-gauge-group">
-                  <div class="metric-gauge-header">
-                    <span>DDR5 Memory Allocation</span>
-                    <span class="ltr-force">3.4 GB / 8.0 GB (42%)</span>
-                  </div>
-                  <div class="metric-gauge-bar">
-                    <div class="metric-gauge-fill" style="width: 42%;"></div>
-                  </div>
-                </div>
-
-                <!-- Storage Gauge -->
-                <div class="metric-gauge-group">
-                  <div class="metric-gauge-header">
-                    <span>NVMe Gen4 IOPS &amp; Quota</span>
-                    <span class="ltr-force">18.5 GB / 100 GB</span>
-                  </div>
-                  <div class="metric-gauge-bar">
-                    <div class="metric-gauge-fill" style="width: 18.5%;"></div>
-                  </div>
-                </div>
-
-                <!-- Telemetry Metrics Grid -->
-                <div class="mini-telemetry-grid">
-                  <div class="mini-telemetry-item">
-                    <span class="label">زمن الاستجابة</span>
-                    <span class="value ltr-force" style="color: var(--metric-success);">&lt; 8.2 ms</span>
-                  </div>
-                  <div class="mini-telemetry-item">
-                    <span class="label">معدل الـ Webhooks</span>
-                    <span class="value ltr-force" style="color: var(--secondary);">148 req/s</span>
-                  </div>
-                  <div class="mini-telemetry-item">
-                    <span class="label">حالة n8n Daemon</span>
-                    <span class="value ltr-force" style="color: var(--metric-success);">RUNNING</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <button class="copy-mini-btn" id="heroCopyBtn" title="نسخ الأمر">
+            <span>نسخ</span>
+            <span>📋</span>
+          </button>
         </div>
       </div>
+
+
     </div>
   </section>
 
@@ -371,163 +231,7 @@
     </div>
   </section>
 
-  <!-- Component #5: Interactive Custom Plan Builder & Price Calculator -->
-  <section id="calculator" class="calculator-section">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-subtitle">CUSTOM INFRASTRUCTURE BUILDER</span>
-        <h2 class="headline-lg section-title">حاسبة الموارد المخصصة وسيرفرك السحابي حسب الطلب</h2>
-        <p class="body-lg">
-          خصص عدد أنوية المعالج (vCPU)، سعة الذاكرة العشوائية (RAM)، وحجم أقراص الـ NVMe بدقة متناهية واحصل على تسعير فوري وشفاف.
-        </p>
-      </div>
 
-      <div class="calc-card-container">
-        <!-- Sliders Controls -->
-        <div>
-          <!-- Slider 1: CPU -->
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">
-                <span>أنوية المعالجة السحابية (AMD EPYC vCPU)</span>
-              </span>
-              <span id="cpuValBadge" class="slider-val-badge">4 Cores</span>
-            </div>
-            <input type="range" id="calcCpu" min="1" max="32" step="1" value="4">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--outline); margin-top: 6px;" class="ltr-force">
-              <span>1 vCPU</span>
-              <span>8 vCPU</span>
-              <span>16 vCPU</span>
-              <span>32 vCPU</span>
-            </div>
-          </div>
-
-          <!-- Slider 2: RAM -->
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">
-                <span>الذاكرة العشوائية الفائقة (DDR5 RAM)</span>
-              </span>
-              <span id="ramValBadge" class="slider-val-badge">8 GB</span>
-            </div>
-            <input type="range" id="calcRam" min="2" max="64" step="2" value="8">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--outline); margin-top: 6px;" class="ltr-force">
-              <span>2 GB</span>
-              <span>16 GB</span>
-              <span>32 GB</span>
-              <span>64 GB</span>
-            </div>
-          </div>
-
-          <!-- Slider 3: Storage -->
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">
-                <span>مساحة التخزين السريعة (NVMe Gen4 Storage)</span>
-              </span>
-              <span id="storageValBadge" class="slider-val-badge">120 GB NVMe</span>
-            </div>
-            <input type="range" id="calcStorage" min="40" max="1000" step="20" value="120">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--outline); margin-top: 6px;" class="ltr-force">
-              <span>40 GB</span>
-              <span>250 GB</span>
-              <span>500 GB</span>
-              <span>1000 GB (1TB)</span>
-            </div>
-          </div>
-
-          <!-- Addons Toggles -->
-          <h4 style="font-size: 14px; font-weight: 600; color: var(--primary); margin: 24px 0 12px;">الميزات والإضافات المتقدمة:</h4>
-          <div class="addons-grid">
-            <div class="addon-card selected" data-addon="backups">
-              <div>
-                <strong style="font-size: 13px; color: var(--primary); display: block;">النسخ الاحتياطي التلقائي</strong>
-                <span style="font-size: 11px; color: var(--outline);">لقطات نظام يومية وحفظ سحابي</span>
-              </div>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary);">مضمّن</span>
-            </div>
-
-            <div class="addon-card selected" data-addon="aiVector">
-              <div>
-                <strong style="font-size: 13px; color: var(--primary); display: block;">قاعدة بيانات الـ Vector للذكاء الاصطناعي</strong>
-                <span style="font-size: 11px; color: var(--outline);">تجهيز Qdrant/Chroma مسبقاً</span>
-              </div>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary);">مفعّل</span>
-            </div>
-
-            <div class="addon-card" data-addon="extraIp">
-              <div>
-                <strong style="font-size: 13px; color: var(--primary); display: block;">عنوان IPv4 مخصص إضافي</strong>
-                <span style="font-size: 11px; color: var(--outline);">عنوان IP نظيف ومعزول</span>
-              </div>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--outline);">اختياري</span>
-            </div>
-
-            <div class="addon-card" data-addon="ddosShield">
-              <div>
-                <strong style="font-size: 13px; color: var(--primary); display: block;">حماية DDoS معززة 1.2 Tbps</strong>
-                <span style="font-size: 11px; color: var(--outline);">تصفية لحظية لهجمات Layer 7</span>
-              </div>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--outline);">اختياري</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Summary & Checkout Sidebar -->
-        <div class="calc-summary-panel">
-          <div>
-            <h3 class="summary-title">ملخص موارد السيرفر</h3>
-            
-            <div class="summary-line">
-              <span>المعالج الحسابي:</span>
-              <strong id="summaryCpu">4 vCPU AMD EPYC</strong>
-            </div>
-
-            <div class="summary-line">
-              <span>الذاكرة العشوائية:</span>
-              <strong id="summaryRam">8 GB DDR5</strong>
-            </div>
-
-            <div class="summary-line">
-              <span>سعة التخزين:</span>
-              <strong id="summaryStorage">120 GB NVMe Gen4</strong>
-            </div>
-
-            <div class="summary-line">
-              <span>حركة المرور (Bandwidth):</span>
-              <strong>10 TB شهرياً (10Gbps)</strong>
-            </div>
-
-            <div class="summary-line">
-              <span>شهادة الأمان SSL:</span>
-              <strong style="color: var(--metric-success);">مجانية وتلقائية</strong>
-            </div>
-
-            <div class="summary-line">
-              <span>صلاحيات النظام:</span>
-              <strong>Root + Docker + n8n Ready</strong>
-            </div>
-          </div>
-
-          <div class="calc-total-box">
-            <span style="font-size: 12px; color: var(--outline); display: block; margin-bottom: 4px;">التكلفة الإجمالية التقديرية:</span>
-            <div class="total-price-display">
-              <span id="summaryTotalPrice" class="price-amount" style="font-size: 38px;">680</span>
-              <span id="summaryCurrency" class="price-currency" style="font-size: 15px;">ج.م / شهر</span>
-            </div>
-
-            <button id="btnDeployCustom" class="btn btn-accent btn-lg" style="width: 100%;">
-              <span>طلب التجهيز الفوري للمواصفات</span>
-              <span>←</span>
-            </button>
-            <p style="font-size: 11px; color: var(--outline); text-align: center; margin-top: 10px;">
-              تجهيز فوري • ضمان استرداد 30 يومًا • دعم فني مصري 24/7
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Pre-built n8n Workflow Templates Showcase -->
   <section id="templates" class="templates-section">
@@ -709,8 +413,8 @@
           <ul class="footer-links">
             <li><a href="#n8n-plans">استضافة n8n المُدارة</a></li>
             <li><a href="#vps-plans">سيرفرات Cloud VPS</a></li>
-            <li><a href="#calculator">حاسبة الموارد المخصصة</a></li>
             <li><a href="#templates">قوالب الأتمتة الجاهزة</a></li>
+            <li><a href="#faq">الأسئلة الشائعة والأمان</a></li>
             <li><a href="#hero">لوحة قياس الأداء الحية</a></li>
           </ul>
         </div>

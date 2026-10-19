@@ -454,25 +454,61 @@ pre,
   border-radius: var(--rounded-full);
 }
 
-/* Hero Section */
+/* Hero Section - Apple Monumental Keynote Presentation */
 .hero-section {
   position: relative;
-  padding: 60px 0 80px;
+  padding: 80px 0 100px;
   overflow: hidden;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 48px;
+.hero-content-centered {
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
-@media (max-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
+.hero-content-centered .hero-badge-row {
+  justify-content: center;
+}
+
+.hero-content-centered .hero-title {
+  font-size: 52px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .hero-content-centered .hero-title {
+    font-size: 34px;
+    line-height: 1.3;
   }
+}
+
+.hero-content-centered .hero-description {
+  max-width: 740px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 17px;
+  line-height: 30px;
+  color: var(--on-surface-variant);
+  margin-bottom: 36px;
+}
+
+.hero-content-centered .hero-actions {
+  justify-content: center;
+  margin-bottom: 36px;
+}
+
+.hero-content-centered .hero-quick-terminal {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 620px;
 }
 
 .hero-badge-row {
@@ -1368,184 +1404,7 @@ input:checked + .slider-round:before {
   color: var(--primary);
 }
 
-/* Calculator Section - Apple Custom Resource Lab */
-.calculator-section {
-  padding: 90px 0;
-  background: linear-gradient(180deg, var(--surface) 0%, rgba(241, 244, 248, 0.8) 100%);
-  position: relative;
-}
 
-.calc-card-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: var(--apple-blur);
-  -webkit-backdrop-filter: var(--apple-blur);
-  border: 1px solid var(--apple-glass-border);
-  border-radius: var(--apple-bento-radius);
-  padding: 44px;
-  box-shadow: var(--apple-glass-bevel), var(--shadow-card-apple-hover);
-  display: grid;
-  grid-template-columns: 1.35fr 0.65fr;
-  gap: 40px;
-}
-
-@media (max-width: 992px) {
-  .calc-card-container {
-    grid-template-columns: 1fr;
-    padding: 26px;
-  }
-}
-
-.slider-group {
-  margin-bottom: 30px;
-}
-
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.slider-label {
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.slider-val-badge {
-  font-family: var(--font-mono);
-  font-size: 13.5px;
-  font-weight: 700;
-  background-color: rgba(0, 89, 187, 0.08);
-  color: var(--secondary);
-  padding: 4px 14px;
-  border-radius: var(--rounded-full);
-  border: 1px solid rgba(0, 89, 187, 0.15);
-}
-
-/* Apple Range Slider */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 8px;
-  border-radius: var(--rounded-full);
-  background: rgba(0, 23, 62, 0.08);
-  outline: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 3px 8px rgba(0, 23, 62, 0.18), 0 1px 2px rgba(0, 0, 0, 0.06);
-  cursor: grab;
-  transition: transform 0.2s var(--apple-spring), box-shadow 0.2s var(--apple-spring);
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.18);
-  box-shadow: 0 0 0 6px rgba(0, 112, 234, 0.16), 0 4px 12px rgba(0, 23, 62, 0.22);
-}
-
-input[type="range"]::-webkit-slider-thumb:active {
-  cursor: grabbing;
-  transform: scale(1.22);
-  box-shadow: 0 0 0 8px rgba(0, 112, 234, 0.25), 0 6px 16px rgba(0, 23, 62, 0.28);
-}
-
-.addons-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 24px;
-}
-
-@media (max-width: 600px) {
-  .addons-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.addon-card {
-  border: 1px solid var(--apple-glass-border);
-  border-radius: var(--rounded-md);
-  padding: 14px 16px;
-  background-color: rgba(248, 250, 252, 0.7);
-  cursor: pointer;
-  transition: all var(--transition-fast) var(--apple-spring);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-}
-
-.addon-card:hover {
-  border-color: rgba(0, 89, 187, 0.3);
-  background-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 23, 62, 0.04);
-}
-
-.addon-card.selected {
-  border-color: var(--secondary);
-  background-color: rgba(0, 89, 187, 0.06);
-  box-shadow: 0 0 0 1px var(--secondary);
-}
-
-.calc-summary-panel {
-  background-color: rgba(248, 250, 252, 0.85);
-  border: 1px solid var(--apple-glass-border);
-  border-radius: var(--rounded-lg);
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.summary-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.summary-line {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  font-size: 13.5px;
-  color: var(--on-surface-variant);
-}
-
-.summary-line strong {
-  font-family: var(--font-mono);
-  color: var(--primary);
-}
-
-.calc-total-box {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 2px dashed var(--surface-border);
-}
-
-.total-price-display {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  margin-bottom: 16px;
-}
 
 /* Templates Section - Apple Bento Grid */
 .templates-section {

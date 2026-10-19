@@ -537,6 +537,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3800);
   }
 
+  // --- Apple Style FAQ Accordion Toggle ---
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', () => {
+      const parentItem = question.closest('.faq-item');
+      if (!parentItem) return;
+      const wasActive = parentItem.classList.contains('active');
+      
+      // Close all other items for clean Apple accordion feel
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      if (!wasActive) {
+        parentItem.classList.add('active');
+      }
+    });
+  });
+
+  // --- Apple Scroll-Driven Entrance Animation System ---
+  const revealTargets = document.querySelectorAll(
+    '.kpi-card, .pricing-card, .template-card, .pipeline-step-card, .faq-item, .section-head, .calc-card-container, .service-card, .guarantee-banner-box'
+  );
+
+  revealTargets.forEach((el) => {
+    el.classList.add('apple-reveal');
+    const siblingIndex = Array.from(el.parentNode.children).indexOf(el);
+    if (siblingIndex > 0 && siblingIndex <= 5) {
+      el.classList.add(`delay-${Math.min(siblingIndex, 5)}`);
+    }
+  });
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('apple-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealTargets.forEach(el => observer.observe(el));
+  } else {
+    revealTargets.forEach(el => el.classList.add('apple-visible'));
+  }
+
+  // --- Apple Living Hardware Telemetry Oscillations ---
+  const cpuLoadVal = document.querySelector('.metric-gauge-group:nth-child(1) .metric-gauge-header .ltr-force');
+  const cpuFill = document.querySelector('.metric-gauge-group:nth-child(1) .metric-gauge-fill');
+  const ramVal = document.querySelector('.metric-gauge-group:nth-child(2) .metric-gauge-header .ltr-force');
+  const ramFill = document.querySelector('.metric-gauge-group:nth-child(2) .metric-gauge-fill');
+  const webhookVal = document.querySelector('.mini-telemetry-item:nth-child(2) .value');
+  const latencyVal = document.querySelector('.mini-telemetry-item:nth-child(1) .value');
+
+  setInterval(() => {
+    if (!cpuLoadVal || !cpuFill) return;
+    const cpuRandom = Math.floor(Math.random() * 8) + 28; // 28% to 35%
+    cpuLoadVal.textContent = `${cpuRandom}% / 4.2 GHz`;
+    cpuFill.style.width = `${cpuRandom}%`;
+
+    if (ramVal && ramFill) {
+      const ramUsed = (3.2 + Math.random() * 0.4).toFixed(1);
+      const ramPct = Math.round((ramUsed / 8.0) * 100);
+      ramVal.textContent = `${ramUsed} GB / 8.0 GB (${ramPct}%)`;
+      ramFill.style.width = `${ramPct}%`;
+    }
+
+    if (webhookVal) {
+      const hooks = Math.floor(Math.random() * 16) + 142;
+      webhookVal.textContent = `${hooks} req/s`;
+    }
+
+    if (latencyVal) {
+      const lat = (7.8 + Math.random() * 0.7).toFixed(1);
+      latencyVal.textContent = `${lat} ms`;
+    }
+  }, 3200);
+
+  // --- Apple Card Specular Coordinates ---
+  const interactiveCards = document.querySelectorAll('.pricing-card, .kpi-card, .template-card, .telemetry-preview-card');
+  interactiveCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
   // Initial runs
   renderPricingCards();
   updateCalculator();

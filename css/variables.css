@@ -1,0 +1,106 @@
+:root {
+  /* Cloud Core Precision - Design System Palette */
+  --surface: #f7fafe;
+  --surface-dim: #d7dade;
+  --surface-bright: #f7fafe;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f1f4f8;
+  --surface-container: #ebeef2;
+  --surface-container-high: #e5e8ec;
+  --surface-container-highest: #e0e3e7;
+  --on-surface: #181c1f;
+  --on-surface-variant: #444750;
+  --inverse-surface: #2d3134;
+  --inverse-on-surface: #eef1f5;
+  --outline: #747781;
+  --outline-variant: #c4c6d1;
+  --surface-tint: #3f5d9a;
+
+  --primary: #00173e;
+  --on-primary: #ffffff;
+  --primary-container: #002b66;
+  --on-primary-container: #7794d5;
+  --inverse-primary: #aec6ff;
+
+  --secondary: #0059bb;
+  --on-secondary: #ffffff;
+  --secondary-container: #0070ea;
+  --on-secondary-container: #fefcff;
+
+  --tertiary: #001c28;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #003245;
+  --on-tertiary-container: #00a1d4;
+
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  --primary-fixed: #d8e2ff;
+  --primary-fixed-dim: #aec6ff;
+  --on-primary-fixed: #001a43;
+  --on-primary-fixed-variant: #254581;
+
+  --secondary-fixed: #d8e2ff;
+  --secondary-fixed-dim: #adc7ff;
+  --on-secondary-fixed: #001a41;
+  --on-secondary-fixed-variant: #004493;
+
+  --tertiary-fixed: #c2e8ff;
+  --tertiary-fixed-dim: #75d1ff;
+  --on-tertiary-fixed: #001e2b;
+  --on-tertiary-fixed-variant: #004d67;
+
+  --background: #f7fafe;
+  --on-background: #181c1f;
+  --surface-variant: #e0e3e7;
+
+  /* Infrastructure Brand Tokens */
+  --server-navy-deep: #001D47;
+  --cloud-cyan-bright: #00D8FF;
+  --cloud-cyan-accent: #00C2FF;
+  --metric-success: #059669;
+  --metric-warning: #D97706;
+  --metric-danger: #DC2626;
+  --surface-ice: #F8FAFC;
+  --surface-border: #E2E8F0;
+  --code-terminal-bg: #0B1528;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'IBM Plex Sans Arabic', 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Shapes & Radii */
+  --rounded-sm: 0.25rem;
+  --rounded-default: 0.5rem;
+  --rounded-md: 0.75rem;
+  --rounded-lg: 1rem;
+  --rounded-xl: 1.5rem;
+  --rounded-full: 9999px;
+
+  /* Spacing */
+  --gutter: 1.25rem;
+  --gutter-mobile: 0.75rem;
+  --margin: 2rem;
+  --margin-mobile: 1rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+
+  /* Elevations & Depth */
+  --shadow-elevation-1: 0 1px 3px rgba(0, 23, 62, 0.05), 0 1px 2px rgba(0, 23, 62, 0.03);
+  --shadow-elevation-2: 0 4px 14px -2px rgba(0, 43, 102, 0.08);
+  --shadow-terminal: 0 12px 32px -4px rgba(0, 29, 71, 0.22);
+  --glow-cyan: 0 0 18px rgba(0, 216, 255, 0.35);
+  --glow-primary: 0 0 20px rgba(0, 123, 255, 0.2);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}

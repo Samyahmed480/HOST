@@ -909,8 +909,263 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   }
 
-  // Initialize ThreeUI Rotor
+  // --- ThreeUI 3D Cloud Datacenter Server Racks Background Engine ---
+  function initServerDatacenterBackground() {
+    const bgCanvas = document.getElementById('egyhostServerBgCanvas');
+    if (!bgCanvas || typeof window.THREE === 'undefined') return;
+
+    const THREE = window.THREE;
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas: bgCanvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'low-power'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Scene & Camera
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0xf8fafc, 12, 38);
+
+    const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4.0, 14);
+    camera.lookAt(0, 1.2, -6);
+
+    // Ambient & Directional Lighting
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 1.8);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0x00d8ff, 2.6);
+    keyLight.position.set(10, 15, 8);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0x0284c7, 1.4);
+    fillLight.position.set(-10, -5, 5);
+    scene.add(fillLight);
+
+    // Datacenter Cluster Group
+    const datacenterGroup = new THREE.Group();
+    scene.add(datacenterGroup);
+
+    // Reusable Materials
+    const rackMat = new THREE.MeshStandardMaterial({
+      color: 0x07152b,
+      metalness: 0.92,
+      roughness: 0.18,
+      transparent: true,
+      opacity: 0.94
+    });
+
+    const bladeMat = new THREE.MeshStandardMaterial({
+      color: 0x0e2444,
+      metalness: 0.85,
+      roughness: 0.3
+    });
+
+    const edgeMat = new THREE.LineBasicMaterial({
+      color: 0x00d8ff,
+      transparent: true,
+      opacity: 0.38
+    });
+
+    // Server Rack Dimensions
+    const rackGeo = new THREE.BoxGeometry(1.6, 5.6, 1.8);
+    const rackEdgeGeo = new THREE.EdgesGeometry(rackGeo);
+    const bladeGeo = new THREE.BoxGeometry(1.48, 0.6, 1.7);
+
+    // Generate Parallel Rows of Datacenter Server Racks
+    const ledPoints = [];
+    const ledColors = [];
+    const serverRacks = [];
+
+    // Left Corridor & Right Corridor Server Racks
+    const rackPositions = [
+      // Left aisle: front to back
+      { x: -4.6, z: 2 },
+      { x: -4.6, z: -3.5 },
+      { x: -4.6, z: -9 },
+      { x: -4.6, z: -14.5 },
+      { x: -4.6, z: -20 },
+      { x: -7.6, z: 0 },
+      { x: -7.6, z: -6 },
+      { x: -7.6, z: -12 },
+      { x: -7.6, z: -18 },
+      // Right aisle: front to back
+      { x: 4.6, z: 2 },
+      { x: 4.6, z: -3.5 },
+      { x: 4.6, z: -9 },
+      { x: 4.6, z: -14.5 },
+      { x: 4.6, z: -20 },
+      { x: 7.6, z: 0 },
+      { x: 7.6, z: -6 },
+      { x: 7.6, z: -12 },
+      { x: 7.6, z: -18 }
+    ];
+
+    rackPositions.forEach(pos => {
+      const rackGroup = new THREE.Group();
+      rackGroup.position.set(pos.x, 2.8, pos.z);
+
+      // Main Chassis
+      const rackMesh = new THREE.Mesh(rackGeo, rackMat);
+      rackGroup.add(rackMesh);
+
+      // Glowing Cyan Edge Lines
+      const edgeLines = new THREE.LineSegments(rackEdgeGeo, edgeMat);
+      rackGroup.add(edgeLines);
+
+      // 7 Tiered 1U/2U Server Trays inside each rack
+      for (let s = 0; s < 7; s++) {
+        const blade = new THREE.Mesh(bladeGeo, bladeMat);
+        blade.position.y = -2.2 + s * 0.72;
+        rackGroup.add(blade);
+
+        // Add 3 Blinking Server Activity LEDs per tray faceplate
+        for (let l = 0; l < 3; l++) {
+          const ledX = pos.x + (pos.x < 0 ? 0.82 : -0.82); // Facing inward corridor
+          const ledY = 2.8 + blade.position.y;
+          const ledZ = pos.z - 0.5 + l * 0.5;
+
+          ledPoints.push(ledX, ledY, ledZ);
+
+          // LED Color: 70% Green, 20% Cyan, 10% Amber
+          const rType = Math.random();
+          if (rType < 0.65) {
+            ledColors.push(0.06, 0.75, 0.45); // Emerald Green
+          } else if (rType < 0.9) {
+            ledColors.push(0.0, 0.85, 1.0);  // Cyan
+          } else {
+            ledColors.push(0.95, 0.65, 0.1);  // Activity Amber
+          }
+        }
+      }
+
+      datacenterGroup.add(rackGroup);
+      serverRacks.push(rackGroup);
+    });
+
+    // Blinking Server Activity LED Point Cloud
+    const ledGeo = new THREE.BufferGeometry();
+    ledGeo.setAttribute('position', new THREE.Float32BufferAttribute(ledPoints, 3));
+    ledGeo.setAttribute('color', new THREE.Float32BufferAttribute(ledColors, 3));
+
+    const ledMat = new THREE.PointsMaterial({
+      size: 0.08,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.95
+    });
+    const ledSystem = new THREE.Points(ledGeo, ledMat);
+    datacenterGroup.add(ledSystem);
+
+    // Floor Optical Network Bus Lines
+    const lineCoords = [];
+    [-4.6, -7.6, 4.6, 7.6, 0].forEach(lx => {
+      lineCoords.push(lx, 0.05, 6);
+      lineCoords.push(lx, 0.05, -24);
+    });
+    const busGeo = new THREE.BufferGeometry();
+    busGeo.setAttribute('position', new THREE.Float32BufferAttribute(lineCoords, 3));
+    const busMat = new THREE.LineBasicMaterial({
+      color: 0x00d8ff,
+      transparent: true,
+      opacity: 0.28
+    });
+    const busLines = new THREE.LineSegments(busGeo, busMat);
+    datacenterGroup.add(busLines);
+
+    // Floating Optical Data Packets (Network Fiber Stream)
+    const packetCount = 80;
+    const packetPositions = new Float32Array(packetCount * 3);
+    const packetSpeeds = [];
+
+    for (let p = 0; p < packetCount; p++) {
+      const aisleX = (Math.random() - 0.5) * 8.0;
+      packetPositions[p * 3] = aisleX;
+      packetPositions[p * 3 + 1] = 0.1 + Math.random() * 4.5;
+      packetPositions[p * 3 + 2] = 4 - Math.random() * 26;
+      packetSpeeds.push(0.04 + Math.random() * 0.06);
+    }
+
+    const packetGeo = new THREE.BufferGeometry();
+    packetGeo.setAttribute('position', new THREE.BufferAttribute(packetPositions, 3));
+    const packetMat = new THREE.PointsMaterial({
+      color: 0x00d8ff,
+      size: 0.06,
+      transparent: true,
+      opacity: 0.85
+    });
+    const packetStream = new THREE.Points(packetGeo, packetMat);
+    datacenterGroup.add(packetStream);
+
+    // Parallax & Scrolling Dynamics
+    let targetCamX = 0;
+    let targetCamY = 4.0;
+    let targetCamZ = 14;
+
+    function onMouseMove(e) {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetCamX = nx * 0.9;
+      targetCamY = 4.0 - ny * 0.5;
+    }
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+    function onScroll() {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
+      const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      targetCamZ = 14 - scrollRatio * 16; // Glide forward down the datacenter aisle!
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    function onResize() {
+      if (!renderer || !camera) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    window.addEventListener('resize', onResize);
+
+    // Animation Loop
+    let tick = 0;
+    function animateBg() {
+      requestAnimationFrame(animateBg);
+
+      tick++;
+
+      // Lerp camera motion (Apple Keynote smooth inertia)
+      camera.position.x += (targetCamX - camera.position.x) * 0.05;
+      camera.position.y += (targetCamY - camera.position.y) * 0.05;
+      camera.position.z += (targetCamZ - camera.position.z) * 0.05;
+      camera.lookAt(targetCamX * 0.3, 1.2, camera.position.z - 18);
+
+      // Animate Traveling Data Packets
+      const posArr = packetGeo.attributes.position.array;
+      for (let p = 0; p < packetCount; p++) {
+        posArr[p * 3 + 2] += packetSpeeds[p];
+        if (posArr[p * 3 + 2] > 6) {
+          posArr[p * 3 + 2] = -24;
+        }
+      }
+      packetGeo.attributes.position.needsUpdate = true;
+
+      // Random Server LED activity blinks
+      if (tick % 6 === 0) {
+        ledMat.opacity = 0.85 + Math.random() * 0.15;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animateBg();
+  }
+
+  // Initialize ThreeUI Rotor & Datacenter Background
   initThreeUIInfrastructureRotor();
+  initServerDatacenterBackground();
 
   // Initial runs
   renderPricingCards();

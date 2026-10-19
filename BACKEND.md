@@ -1,206 +1,301 @@
-# EGYHOST — توثيق معمارية الباك إند ومحرك التجهيز السحابي
-### Backend Architecture & Automated Provisioning Engine Specification
-**نظام التصميم:** Cloud Core Precision  
-**المنصة:** EGYHOST (Cloud VPS & Managed n8n Automation Infrastructure)
+# EGYHOST — الدليل الشامل لمعمارية الباك إند وقاعدة البيانات
+## Backend Architecture Blueprint (PHP 8.2+ & MySQL 8.0)
+**نظام التصميم والبنية:** Cloud Core Precision  
+**المنصة:** EGYHOST (Cloud VPS & Managed n8n Automation Infrastructure)  
+**التقنيات الأساسية:** PHP 8.2+ | MySQL 8.0 / MariaDB 10.4+ | Docker Engine API | Nginx / Traefik  
 
 ---
 
-## 📌 1. نظرة عامة على النظام (System Overview)
+> **ملاحظة توجيهية:** تم إعداد هذا الملف كمرجع معماري وتخطيطي شامل لتنفيذ الباك إند مستقبلاً، حيث يقتصر المستودع الحالي على واجهة المستخدم (الفرونت إند) المكتملة بنسبة 100%.
 
-صُممت المنصة وفق معمارية برمجية مفصولة بالكامل (**Decoupled Micro-services / Event-Driven Architecture**)، حيث يتولى الفرونت إند (Frontend Client) التفاعل مع المستخدم وعرض المقاييس التفاعلية والحاسبة، بينما يتولى الباك إند (Backend Core) استقبال الطلبات، إدارة المدفوعات المحلية، والتواصل مع بيئة الخوادم والـ Hypervisors عبر طوابير مهام غير متزامنة (Asynchronous Job Queues).
+---
+
+## 📌 1. المعمارية العامة للباك إند (System Architecture Overview)
+
+يعتمد الباك إند المقترح لـ **EGYHOST** على بنية خدماتية مفصولة تعتمد على واجهات البرمجة (**Decoupled RESTful API Architecture**)، بحيث يتواصل الفرونت إند عبر طلبات `Fetch / JSON` مع خادم الـ PHP، وتُحفظ كافة العمليات في قاعدة بيانات **MySQL** عالية الأداء، بينما يتولى خادم الـ PHP إصدار أوامر التجهيز الآلي للسيرفرات وحاويات **n8n** عبر **Docker Engine API** وبروتوكول **SSH**.
 
 ```
-   ┌────────────────────────────────────────────────────────┐
-   │            واجهة المستخدم (Frontend UI / Client)        │
-   │  (حاسبة الموارد - محاكي التجهيز - عروض n8n و VPS)      │
-   └───────────────────────────┬────────────────────────────┘
-                               │ HTTPS / REST API / WSS
-                               ▼
-   ┌────────────────────────────────────────────────────────┐
-   │             بوابة الخدمات (API Gateway / Nginx)         │
-   │   (Rate Limiting - CORS - SSL Termination - Auth)      │
-   └───────────────────────────┬────────────────────────────┘
-                               │
-            ┌──────────────────┴──────────────────┐
-            ▼                                     ▼
-┌───────────────────────────────┐   ┌───────────────────────────────┐
-│     خادم الباك إند الرئيسي    │   │      محرك التجهيز الآلي       │
-│  (Node.js / Express / Go)     │   │ (Worker Daemon / BullMQ Queue)│
-│  - إدارة المستخدمين والخطط     │   │ - حجز الـ IP والموارد         │
-│  - بوابات الدفع (InstaPay/VF) │   │ - إنشاء حاويات Docker/n8n     │
-│  - واجهات التحكم في السيرفرات │   │ - تهيئة Postgres و SSL        │
-└───────────────┬───────────────┘   └───────────────┬───────────────┘
-                │                                   │
-                ▼                                   ▼
-┌───────────────────────────────┐   ┌───────────────────────────────┐
-│     قاعدة البيانات الرئيسية    │   │     بيئة الخوادم والعقد       │
-│      (PostgreSQL 16)          │   │  (Proxmox VE / Docker Nodes)  │
-│ - Users, Orders, Servers, Auth│   │  (Cairo EG-IX / Frankfurt DE) │
-└───────────────────────────────┘   └───────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│           واجهة المستخدم الحالية (Frontend Client)       │
+│  - حاسبة الموارد المخصصة - محاكي خط التجهيز الآلي       │
+│  - استعراض باقات n8n والـ VPS - بوابات الدفع المحلية    │
+└───────────────────────────┬────────────────────────────┘
+                            │ HTTPS / REST API (JSON)
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│             بوابة الـ API وخادم الويب (Nginx / Apache)  │
+│  - توجيه المسارات - ضغط Gzip/Brotli - شهادات SSL        │
+│  - حماية من هجمات حجب الخدمة ومعدل الطلبات (Rate Limit)│
+└───────────────────────────┬────────────────────────────┘
+                            │ FastCGI
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│           خادم الباك إند الرئيسي (PHP 8.2+ Core)        │
+│  ├── Controllers: معالجة الطلبات، الحسابات، التحقق      │
+│  ├── Services: محرك التجهيز الآلي، بوابات الدفع         │
+│  └── Config & DB: اتصال PDO آمن مع MySQL بنظام Pooling │
+└─────────────┬────────────────────────────┬─────────────┘
+              │                            │
+   SQL Queries│ (PDO Prepared Statements)  │ Docker Socket / cURL
+              ▼                            ▼
+┌───────────────────────────┐  ┌─────────────────────────────┐
+│  قاعدة البيانات (MySQL)   │  │    بيئة السيرفرات السحابية   │
+│  (egyhost_db - MariaDB)   │  │   (Hypervisors & Docker)    │
+│  - Users, Orders, Servers │  │   - n8n Enterprise Daemons  │
+│  - Plans, Transactions    │  │   - Isolated Linux Cgroups  │
+│  - Telemetry Logs Cache   │  │   - PostgreSQL 16 & Redis   │
+└───────────────────────────┘  └─────────────────────────────┘
 ```
 
 ---
 
-## ⚡ 2. دورة حياة تجهيز سيرفر n8n آلياً (Automated Pipeline Workflow)
+## 🗄️ 2. مخطط وتصميم قاعدة البيانات بالكامل (MySQL / MariaDB Schema)
 
-عندما يضغط العميل على **"تأكيد وإطلاق السيرفر"** في الفرونت إند، يتم تنفيذ الخطوات البرمجية التالية على الباك إند:
+تستخدم المنصة قاعدة بيانات **MySQL 8.0** أو **MariaDB 10.4+** (المتوافقة كلياً مع بيئة **XAMPP** وسيرفرات لينكس الإنتاجية) مع محرك **InnoDB** لدعم المعاملات البنكية المحمية (**ACID Compliant Transactions**) وترميز **`utf8mb4_unicode_ci`** لدعم النصوص العربية والرموز بشكل مثالي.
 
-### الخطوة 1: استلام الطلب والتحقق (Order Ingestion)
-1. يستقبل الباك إند عبر `POST /api/v1/orders/checkout` حمولة الطلب (Payload):
-   - نوع الخطة (مثلاً `n8n-pro` أو مواصفات الـ Custom Calculator).
-   - النطاق المطلوب (`Hostname`).
-   - مركز البيانات المختار (`Cairo EG-IX` أو `Frankfurt`).
-   - وسيلة الدفع (إنستاباي، فودافون كاش، فوري، فيزا).
-2. يتم تسجيل الطلب في قاعدة البيانات بالحالة `PENDING_PAYMENT`.
-
-### الخطوة 2: معالجة وتأكيد الدفع (Payment Processing)
-- **InstaPay / فودافون كاش:**
-  - يتم إنشاء معرف دفع فريد (`reference_code`) وإرساله للعميل.
-  - بمجرد استلام التحويل (عبر Webhook بنكي أو التحقق الآلي من رسائل المحفظة أو موافقة الدعم)، تتغير الحالة إلى `PAID`.
-- يتم إطلاق حدث (Event): `order.paid` لإدراج مهمة التجهيز في طابور الـ Worker.
-
-### الخطوة 3: التجهيز الآلي للبنية (Automated Infrastructure Provisioning)
-يقوم الـ Worker المسؤول عن عقدة التشغيل (Node Agent) بتنفيذ الإجراءات التالية بالتتابع في أقل من 30 ثانية:
-1. **حجز الموارد (Resource Isolation):**
-   - حجز عنوان IPv4 مخصص ونظيف من مجمع العناوين (IP Pool).
-   - إنشاء مستخدم نظام معزول `uid:gid` وضبط حدود cgroups (vCPU Cores & RAM limits).
-2. **تهيئة وحدة التخزين (NVMe Storage Provisioning):**
-   - تخصيص مجلد التخزين المستقل `/var/lib/egyhost/instances/{instance_id}`.
-   - تهيئة نظام الملفات وتطبيق كوتا الحجم (XFS/ZFS Quota).
-3. **تشغيل حاوية n8n Enterprise Daemon:**
-   - استدعاء Docker Engine API لتشغيل حاوية `docker.n8n.io/n8nio/n8n:latest`.
-   - ضبط المتغيرات البيئية الحساسة:
-     ```env
-     N8N_HOST=automation.domain.com
-     WEBHOOK_URL=https://automation.domain.com/
-     DB_TYPE=postgresdb
-     DB_POSTGRESDB_HOST=postgres-cluster-internal
-     EXECUTIONS_MODE=queue
-     QUEUE_BULL_REDIS_HOST=redis-broker-internal
-     N8N_ENCRYPTION_KEY={SECURE_GENERATED_KEY}
-     ```
-4. **ربط قاعدة بيانات PostgreSQL 16 و Redis:**
-   - إنشاء قاعدة بيانات مستقلة `n8n_{client_id}` ومستخدم ذو صلاحيات محصورة.
-   - تفعيل طابور Redis لضمان عدم فقدان أي خطاف ويب (Zero-dropped Webhooks) تحت الضغط العالي.
-5. **البروكسي العكسي وإصدار SSL التلقائي:**
-   - حقن مسار التوجيه في Traefik أو Nginx Vhost آلياً.
-   - طلب شهادة Let's Encrypt TLS v1.3 عبر ACME DNS Challenge وربطها بالدومين.
-
-### الخطوة 4: إرسال بيانات الاعتماد وتفعيل المراقبة
-- حفظ بيانات الدخول مشفرة (AES-256-GCM) في جدول السيرفرات.
-- إرسال بريد إلكتروني ورسالة واتساب تلقائية تتضمن:
-  - عنوان الـ IPv4 المخصص.
-  - رابط لوحة تحكم n8n: `https://automation.yourdomain.com/`
-  - اسم المستخدم وكلمة مرور الـ Root / Dashboard.
-- بدء جمع مقاييس التيليميتري الدورية (CPU, RAM, Disk, Latency).
-
----
-
-## 🗄️ 3. مخطط قاعدة البيانات (Database Schema - PostgreSQL)
+### كود إنشاء الجداول (DDL SQL Script):
 
 ```sql
--- 1. جدول المستخدمين (Users Table)
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    full_name VARCHAR(150) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    phone_number VARCHAR(30) NOT NULL, -- أرقام مصرية (+2010...)
-    password_hash VARCHAR(255) NOT NULL,
-    role VARCHAR(20) DEFAULT 'CLIENT', -- CLIENT, ADMIN, SUPPORT
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+CREATE DATABASE IF NOT EXISTS `egyhost_db` 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
 
--- 2. جدول الخطط والباقات (Plans Table)
-CREATE TABLE plans (
-    id VARCHAR(50) PRIMARY KEY, -- e.g. 'n8n-starter', 'n8n-pro', 'vps-2'
-    category VARCHAR(20) NOT NULL, -- 'n8n' OR 'vps'
-    name_ar VARCHAR(100) NOT NULL,
-    name_en VARCHAR(100) NOT NULL,
-    cpu_cores INT NOT NULL,
-    ram_gb INT NOT NULL,
-    storage_gb INT NOT NULL,
-    bandwidth_tb INT NOT NULL DEFAULT 4,
-    price_egp NUMERIC(10, 2) NOT NULL,
-    price_usd NUMERIC(10, 2) NOT NULL,
-    is_featured BOOLEAN DEFAULT FALSE,
-    is_active BOOLEAN DEFAULT TRUE
-);
+USE `egyhost_db`;
 
--- 3. جدول السيرفرات وحاويات n8n (Servers / Instances Table)
-CREATE TABLE servers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    plan_id VARCHAR(50) REFERENCES plans(id),
-    server_type VARCHAR(20) NOT NULL, -- 'MANAGED_N8N', 'RAW_VPS'
-    hostname VARCHAR(255) NOT NULL,
-    datacenter_region VARCHAR(50) NOT NULL, -- 'cairo-eg1', 'frankfurt-de1'
-    assigned_ipv4 INET UNIQUE,
-    assigned_ipv6 CIDR,
-    status VARCHAR(30) DEFAULT 'PROVISIONING', -- PROVISIONING, ACTIVE, STOPPED, SUSPENDED
-    ssh_port INT DEFAULT 22,
-    root_password_encrypted TEXT,
-    n8n_subdomain VARCHAR(255),
-    n8n_version VARCHAR(30) DEFAULT '1.65.2',
-    is_redis_queue_enabled BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    expires_at TIMESTAMP WITH TIME ZONE NOT NULL
-);
+-- 1. جدول المستخدمين والعملاء (Users)
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `uuid` CHAR(36) NOT NULL UNIQUE,
+  `full_name` VARCHAR(150) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `phone_number` VARCHAR(30) NOT NULL, -- رقم الهاتف المصري (+2010...)
+  `password_hash` VARCHAR(255) NOT NULL,
+  `role` ENUM('CLIENT', 'ADMIN', 'SUPPORT') NOT NULL DEFAULT 'CLIENT',
+  `status` ENUM('ACTIVE', 'SUSPENDED', 'PENDING_VERIFICATION') NOT NULL DEFAULT 'ACTIVE',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_email` (`email`),
+  INDEX `idx_phone` (`phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 4. جدول المعاملات والمدفوعات (Transactions & Payments Table)
-CREATE TABLE transactions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id),
-    server_id UUID REFERENCES servers(id),
-    amount NUMERIC(10, 2) NOT NULL,
-    currency VARCHAR(10) NOT NULL, -- 'EGP', 'USD'
-    payment_method VARCHAR(50) NOT NULL, -- 'INSTAPAY', 'VODAFONE_CASH', 'FAWRY', 'CARD'
-    reference_code VARCHAR(100) UNIQUE NOT NULL,
-    receipt_attachment_url TEXT,
-    status VARCHAR(30) DEFAULT 'PENDING', -- PENDING, COMPLETED, FAILED, REFUNDED
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    confirmed_at TIMESTAMP WITH TIME ZONE
-);
+-- 2. جدول الخطط والباقات السحابية (Plans)
+CREATE TABLE IF NOT EXISTS `plans` (
+  `id` VARCHAR(50) PRIMARY KEY, -- مثال: 'n8n-starter', 'n8n-pro', 'vps-2'
+  `category` ENUM('n8n', 'vps') NOT NULL,
+  `name_ar` VARCHAR(100) NOT NULL,
+  `name_en` VARCHAR(100) NOT NULL,
+  `description_ar` TEXT,
+  `cpu_cores` INT UNSIGNED NOT NULL,
+  `ram_gb` INT UNSIGNED NOT NULL,
+  `storage_gb` INT UNSIGNED NOT NULL,
+  `bandwidth_tb` INT UNSIGNED NOT NULL DEFAULT 4,
+  `price_egp_monthly` DECIMAL(10,2) NOT NULL,
+  `price_usd_monthly` DECIMAL(10,2) NOT NULL,
+  `is_featured` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 5. جدول سجلات التيليميتري والمراقبة (Telemetry Logs Table)
-CREATE TABLE telemetry_metrics (
-    id BIGSERIAL PRIMARY KEY,
-    server_id UUID NOT NULL REFERENCES servers(id) ON DELETE CASCADE,
-    cpu_usage_pct NUMERIC(5, 2) NOT NULL,
-    ram_usage_pct NUMERIC(5, 2) NOT NULL,
-    disk_usage_pct NUMERIC(5, 2) NOT NULL,
-    webhooks_per_second INT DEFAULT 0,
-    ping_latency_ms NUMERIC(6, 2) NOT NULL,
-    recorded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+-- 3. جدول السيرفرات السحابية وحاويات n8n (Servers / Instances)
+CREATE TABLE IF NOT EXISTS `servers` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `uuid` CHAR(36) NOT NULL UNIQUE,
+  `user_id` INT UNSIGNED NOT NULL,
+  `plan_id` VARCHAR(50) DEFAULT NULL,
+  `server_type` ENUM('MANAGED_N8N', 'RAW_VPS', 'CUSTOM_CLOUD') NOT NULL,
+  `hostname` VARCHAR(255) NOT NULL,
+  `datacenter_region` VARCHAR(50) NOT NULL DEFAULT 'cairo-eg1',
+  `assigned_ipv4` VARCHAR(45) DEFAULT NULL UNIQUE,
+  `assigned_ipv6` VARCHAR(100) DEFAULT NULL,
+  `status` ENUM('PROVISIONING', 'ACTIVE', 'STOPPED', 'SUSPENDED', 'TERMINATED') NOT NULL DEFAULT 'PROVISIONING',
+  `ssh_port` INT UNSIGNED NOT NULL DEFAULT 22,
+  `root_password_encrypted` TEXT,
+  `n8n_subdomain` VARCHAR(255) DEFAULT NULL,
+  `n8n_version` VARCHAR(30) DEFAULT '1.65.2',
+  `docker_container_id` VARCHAR(128) DEFAULT NULL,
+  `is_redis_queue_enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` TIMESTAMP NOT NULL,
+  INDEX `idx_user_servers` (`user_id`),
+  INDEX `idx_server_status` (`status`),
+  CONSTRAINT `fk_servers_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_servers_plan` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE INDEX idx_telemetry_server_time ON telemetry_metrics(server_id, recorded_at DESC);
-CREATE INDEX idx_servers_status ON servers(status);
+-- 4. جدول الطلبات (Orders)
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `order_number` VARCHAR(50) NOT NULL UNIQUE,
+  `user_id` INT UNSIGNED NOT NULL,
+  `server_id` INT UNSIGNED DEFAULT NULL,
+  `plan_id` VARCHAR(50) DEFAULT NULL,
+  `billing_cycle` ENUM('monthly', 'annual') NOT NULL DEFAULT 'monthly',
+  `total_amount` DECIMAL(10,2) NOT NULL,
+  `currency` ENUM('EGP', 'USD') NOT NULL DEFAULT 'EGP',
+  `payment_method` ENUM('INSTAPAY', 'VODAFONE_CASH', 'FAWRY', 'CARD', 'CRYPTO') NOT NULL,
+  `status` ENUM('PENDING_PAYMENT', 'PROCESSING', 'PAID', 'CANCELLED', 'REFUNDED') NOT NULL DEFAULT 'PENDING_PAYMENT',
+  `reference_code` VARCHAR(100) NOT NULL UNIQUE,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paid_at` TIMESTAMP NULL DEFAULT NULL,
+  INDEX `idx_user_orders` (`user_id`),
+  INDEX `idx_order_ref` (`reference_code`),
+  CONSTRAINT `fk_orders_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_orders_server` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. جدول المعاملات وتأكيد الدفع (Transactions)
+CREATE TABLE IF NOT EXISTS `transactions` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT UNSIGNED NOT NULL,
+  `amount` DECIMAL(10,2) NOT NULL,
+  `currency` ENUM('EGP', 'USD') NOT NULL DEFAULT 'EGP',
+  `payment_method` VARCHAR(50) NOT NULL,
+  `sender_identifier` VARCHAR(100) DEFAULT NULL, -- رقم فودافون كاش أو عنوان إنستاباي IPA
+  `external_transaction_id` VARCHAR(150) DEFAULT NULL,
+  `receipt_attachment_url` VARCHAR(255) DEFAULT NULL,
+  `status` ENUM('PENDING', 'VERIFIED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+  `verified_by_user_id` INT UNSIGNED DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `verified_at` TIMESTAMP NULL DEFAULT NULL,
+  INDEX `idx_order_txn` (`order_id`),
+  CONSTRAINT `fk_txn_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 6. جدول مقاييس التيليميتري الحية (Telemetry Metrics)
+CREATE TABLE IF NOT EXISTS `telemetry_metrics` (
+  `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `server_id` INT UNSIGNED NOT NULL,
+  `cpu_usage_pct` DECIMAL(5,2) NOT NULL,
+  `ram_usage_pct` DECIMAL(5,2) NOT NULL,
+  `disk_usage_pct` DECIMAL(5,2) NOT NULL,
+  `webhooks_per_sec` INT UNSIGNED NOT NULL DEFAULT 0,
+  `ping_latency_ms` DECIMAL(6,2) NOT NULL DEFAULT 8.00,
+  `recorded_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_server_metrics` (`server_id`, `recorded_at` DESC),
+  CONSTRAINT `fk_metrics_server` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 ---
 
-## 📡 4. مواصفات واجهات البرمجة (RESTful API Specification)
+## 📁 3. الهيكل المقترح لمجلدات الباك إند بـ PHP (Future Directory Layout)
 
-### 1. جلب الخطط والأسعار الحالية
-- **Endpoint:** `GET /api/v1/plans`
-- **Response:**
+عند البدء في بناء كود الباك إند مستقبلاً، يُوصى بهذا الهيكل النظيف والمنظم:
+
+```text
+c:\xampp\htdocs\host\
+├── (ملفات الفرونت إند الحالية: index.html, about.html, privacy.html, css/, js/, assets/)
+│
+└── backend/                       # مجلد الباك إند المستقبلي
+    ├── config/
+    │   ├── Database.php           # فئة الاتصال بقاعدة بيانات MySQL عبر PDO
+    │   └── app.php                # إعدادات النظام، العملات، ومفاتيح التشفير
+    ├── controllers/
+    │   ├── PlanController.php     # التحكم في جلب الباقات وحساب الأسعار
+    │   ├── OrderController.php    # إنشاء الطلبات وربط وسائل الدفع
+    │   ├── ServerController.php   # التحكم في السيرفرات (تشغيل، إيقاف، إعادة بناء)
+    │   └── TelemetryController.php# تجميع وبث مقاييس الأداء للفرونت إند
+    ├── services/
+    │   ├── DockerService.php      # التواصل مع Docker Engine API عبر PHP cURL
+    │   ├── PaymentService.php     # التحقق من مدفوعات فودافون كاش وإنستاباي
+    │   └── NotificationService.php# إرسال رسائل التفعيل عبر الإيميل وواتساب
+    ├── cron/
+    │   ├── check_expirations.php  # فحص انتهاء الاشتراكات وتنبيه العملاء
+    │   └── collect_telemetry.php  # سحب استهلاك المعالج والرام دورياً
+    └── api/
+        ├── plans.php              # نقطة النهاية: GET /backend/api/plans.php
+        ├── checkout.php           # نقطة النهاية: POST /backend/api/checkout.php
+        ├── verify_payment.php     # نقطة النهاية: POST /backend/api/verify_payment.php
+        ├── server_action.php      # نقطة النهاية: POST /backend/api/server_action.php
+        └── telemetry.php          # نقطة النهاية: GET /backend/api/telemetry.php
+```
+
+---
+
+## ⚡ 4. دورة حياة تجهيز سيرفر n8n آلياً بـ PHP (Provisioning Workflow)
+
+تتم عملية إطلاق وتجهيز سيرفر n8n للعميل من خلال كود PHP عبر 5 مراحل متتالية:
+
+### المرحلة 1: استقبال الطلب وإنشاء السجل في MySQL
+- يستقبل ملف `checkout.php` بيانات العميل (النطاق، الباقة المختارة، وسيلة الدفع).
+- يتم إنشاء أمر الطلب بحالة `PENDING_PAYMENT` مع توليد كود مرجعي فريد (مثال: `EGY-884920`).
+
+### المرحلة 2: تأكيد الدفع المحلي (InstaPay / Vodafone Cash)
+- العميل يدفع عبر إنستاباي أو محفظة فودافون كاش ويرسل رقم العملية أو إشعار التحويل.
+- بمجرد التأكيد، يقوم `PaymentService.php` بتحديث حالة الطلب إلى `PAID`، ويبدأ تشغيل خدمة التجهيز `DockerService::provisionServer()`.
+
+### المرحلة 3: التجهيز الآلي عبر Docker Engine API بـ PHP
+يتواصل PHP مباشرة مع مقبس Docker الداخلي (`/var/run/docker.sock` أو عبر HTTP REST API لمنفذ `2375`) لتنفيذ الأوامر التالية بدون تدخل بشري:
+1. **عزل المستخدم ومجلد العمل:**
+   ```php
+   $instancePath = "/var/lib/egyhost/instances/{$serverId}";
+   mkdir($instancePath, 0755, true);
+   ```
+2. **إنشاء قاعدة بيانات PostgreSQL مستقلة للحاوية:**
+   يقوم PHP بإنشاء قاعدة بيانات مخصصة `n8n_{id}` ومستخدم مشفر لكتابة وحفظ سجلات الـ Executions.
+3. **تشغيل حاوية n8n الرسمية مع دعم Redis Queue:**
+   يرسل PHP طلب `POST` إلى نقطة نهاية داکر `/containers/create` بالمتغيرات البيئية:
+   ```json
+   {
+     "Image": "docker.n8n.io/n8nio/n8n:latest",
+     "Env": [
+       "N8N_HOST=automation.domain.com",
+       "WEBHOOK_URL=https://automation.domain.com/",
+       "DB_TYPE=postgresdb",
+       "EXECUTIONS_MODE=queue",
+       "N8N_ENCRYPTION_KEY=sec_live_9942a7b8e"
+     ]
+   }
+   ```
+4. **توجيه البروكسي العكسي وإصدار SSL التلقائي:**
+   - حقن اسم النطاق في إعدادات Traefik أو Nginx.
+   - طلب شهادة TLS v1.3 مجانية من Let's Encrypt عبر بروتوكول ACME.
+
+### المرحلة 4: توليد وحفظ بيانات الدخول وتنبيه العميل
+- حفظ عنوان الـ IP المخصص وبيانات الـ Root مشفرة في جدول `servers`.
+- إرسال بريد إلكتروني ورسالة واتساب للعميل تتضمن:
+  - رابط لوحة n8n: `https://automation.domain.com/`
+  - بيانات الـ SSH وسيرفر الـ VPS.
+
+---
+
+## 💳 5. آلية التكامل مع بوابات الدفع المصرية في PHP
+
+### أ. إنستاباي اللحظي (InstaPay):
+1. يولد PHP عنوان الدفع اللحظي (`egyhost@instapay`) وكود المرجع (`EGY-XXXXXX`).
+2. العميل يقوم بالتحويل اللحظي ويكتب الكود المرجعي في خانة الملاحظات داخل تطبيق InstaPay.
+3. يقوم النظام بمطابقة إشعار التحويل وتفعيل السيرفر خلال ثوانٍ.
+
+### ب. فودافون كاش (Vodafone Cash):
+1. يزود PHP العميل برقم المحفظة المعتمد للشركة.
+2. يدخل العميل رقم المحفظة التي حول منها لتأكيد الإيداع في جدول `transactions`.
+
+### ج. فوري (Fawry Pay):
+1. تكامل عبر Fawry Server API لإنشاء كود دفع برقم مرجعي ينتهي خلال 24 ساعة.
+2. استقبال Webhook من فوري عند سداد العميل في أي ماكينة لتغيير حالة السيرفر فورياً إلى `ACTIVE`.
+
+---
+
+## 📡 6. مواصفات واجهات البرمجة (RESTful API Endpoints Spec)
+
+### 1. جلب الخطط والأسعار
+- **المسار:** `GET /backend/api/plans.php`
+- **الاستجابة:**
 ```json
 {
   "success": true,
-  "exchange_rate": { "USD_TO_EGP": 48.50 },
-  "categories": {
+  "exchange_rate": 48.50,
+  "plans": {
     "n8n": [
       {
         "id": "n8n-pro",
-        "name": "n8n Pro Business",
-        "cpu": 4,
+        "name_ar": "n8n Pro Business",
+        "cpu_cores": 4,
         "ram_gb": 8,
         "storage_gb": 100,
-        "price_egp_monthly": 750.00,
-        "price_usd_monthly": 15.50,
-        "redis_queue": true,
-        "unlimited_executions": true
+        "price_egp": 750.00,
+        "price_usd": 15.50,
+        "featured": true
       }
     ]
   }
@@ -209,97 +304,68 @@ CREATE INDEX idx_servers_status ON servers(status);
 
 ---
 
-### 2. إنشاء طلب سيرفر جديد (Checkout)
-- **Endpoint:** `POST /api/v1/orders/checkout`
-- **Request Body:**
+### 2. إتمام الطلب وتوليد كود الدفع
+- **المسار:** `POST /backend/api/checkout.php`
+- **الحمولة المرسلة من الفرونت إند:**
 ```json
 {
   "plan_id": "n8n-pro",
-  "hostname": "workflows.agency.com",
-  "region": "cairo-eg1",
-  "billing_cycle": "annual",
+  "hostname": "automation-cluster.mycompany.com",
+  "datacenter": "cairo-eg1",
   "payment_method": "INSTAPAY",
-  "client": {
-    "name": "أحمد إبراهيم",
-    "email": "ahmed@agency.com",
-    "phone": "+201012345678"
+  "billing_cycle": "monthly"
+}
+```
+- **استجابة الباك إند:**
+```json
+{
+  "success": true,
+  "order_number": "ORD-77A91B",
+  "reference_code": "EGY-994218",
+  "total_amount_egp": 750.00,
+  "payment_details": {
+    "method": "InstaPay",
+    "ipa": "egyhost@instapay",
+    "account_name": "EGYHOST Cloud Services"
   }
 }
 ```
-- **Response:**
+
+---
+
+### 3. سحب مقاييس الأداء الحية (Live Telemetry)
+- **المسار:** `GET /backend/api/telemetry.php?server_id=1`
+- **الاستجابة:**
 ```json
 {
   "success": true,
-  "order_id": "ord_88412acb",
-  "amount_due": 7200.00,
-  "currency": "EGP",
-  "payment_instructions": {
-    "method": "INSTAPAY",
-    "ipa_address": "egyhost@instapay",
-    "account_name": "EGYHOST Cloud Services",
-    "reference_code": "EGY-99421"
-  },
-  "status": "AWAITING_PAYMENT"
+  "metrics": {
+    "cpu_load_pct": 32.4,
+    "ram_used_gb": 3.4,
+    "ram_total_gb": 8.0,
+    "storage_used_gb": 18.5,
+    "webhooks_per_sec": 148,
+    "ping_cairo_ms": 8.2
+  }
 }
 ```
 
 ---
 
-### 3. تأكيد الدفع وإطلاق السيرفر فورياً
-- **Endpoint:** `POST /api/v1/orders/{order_id}/verify-payment`
-- **Request Body:**
-```json
-{
-  "reference_code": "EGY-99421",
-  "sender_phone_or_ipa": "ahmed@instapay",
-  "transaction_id": "TXN_7749102"
-}
-```
-- **Response:**
-```json
-{
-  "success": true,
-  "status": "PROVISIONING_STARTED",
-  "estimated_time_seconds": 30,
-  "stream_url": "/api/v1/servers/instance_38291/stream-logs"
-}
-```
+## 🔒 7. أفضل ممارسات الأمان والحماية في PHP & MySQL
+
+1. **الوقاية التامة من ثغرات حقن الاستعلامات (SQL Injection):**
+   - استخدام استعلامات **PDO Prepared Statements** حصراً مع منع المحاكاة (`PDO::ATTR_EMULATE_PREPARES => false`).
+2. **تشفير كلمات المرور:**
+   - استخدام دالة `password_hash($password, PASSWORD_ARGON2ID)` أو `PASSWORD_BCRYPT` مع Cost Factor مناسب.
+3. **حماية ملفات التكوين والبيئة:**
+   - تخزين بيانات الاتصال ومفاتيح تشفير n8n خارج مسار الويب العام (`public_html`) واستدعاؤها عبر متغيرات البيئة `.env`.
+4. **حماية الـ REST APIs:**
+   - التحقق من ترويسات `CORS` وتقييد المصادر المصرح لها بالاتصال.
+   - تطبيق `Rate Limiting` لمنع إغراق الخادم بالطلبات (DDoS mitigation على مستوى التطبيق).
+5. **عزل الحاويات المشغلة لـ n8n:**
+   - تشغيل حاويات n8n بمستخدم غير جذري (`non-root user`) مع تقييد وصولها إلى ملفات النظام الرئيسية.
 
 ---
 
-### 4. التحكم في دورة حياة السيرفر (Server Lifecycle Management)
-- `POST /api/v1/servers/{server_id}/action`
-  - Actions: `start`, `stop`, `restart`, `rebuild`, `create_snapshot`.
-- `GET /api/v1/servers/{server_id}/telemetry`
-  - إرجاع إحصائيات المعالج، الرام، وحالة n8n الحية كل 5 ثوانٍ.
-
----
-
-## 🔒 5. الأمان والعزل في بيئة الإنتاج (Production Security & Isolation)
-
-1. **شبكة معزولة لكل عميل (Isolated Docker Bridge Network):**
-   - كل حاوية n8n وقاعدة بيانات Postgres تعمل داخل Docker Network معزولة تماماً لا تستطيع الوصول للحاويات المجاورة (`icc=false`).
-2. **الحماية ضد هجمات حجب الخدمة (1.2 Tbps DDoS Shield):**
-   - تمرير حركة مرور منفذ 80 و 443 عبر شبكة تصفية وتوزيع BGP Anycast في القاهرة وفرانكفورت.
-3. **جدار حماية UFW مسبق التكوين:**
-   - قفل منافذ قواعد البيانات الداخلية (5432, 6379) والسماح بالوصول إليها فقط محلياً (`127.0.0.1`).
-   - حماية منفذ SSH (تغيير المنفذ الافتراضي، إغلاق تسجيل الدخول بكلمة سر وتفعيل الـ Keys + Fail2ban لحظر أي تخمين بعد 3 محاولات).
-4. **تشفير المفاتيح والتكوينات:**
-   - استخدام `N8N_ENCRYPTION_KEY` عشوائي 256-bit لكل عميل لحماية بيانات الـ Credentials والـ API Keys المحفوظة في السيناريوهات.
-
----
-
-## 🛠️ 6. مقترح حزمة التقنيات للباك إند (Recommended Tech Stack)
-
-| المكون | التقنية الموصى بها | السبب والمبرر التقني |
-| :--- | :--- | :--- |
-| **لغة الباك إند** | **Node.js (TypeScript) أو Go** | أداء استثنائي في التعامل مع طلبات الـ I/O المكثفة والـ Webhooks والـ WebSockets |
-| **إطار العمل** | **Express.js / Fastify أو Go Fiber** | سرعة، خفة استهلاك الذاكرة، وسهولة التوثيق |
-| **قاعدة البيانات** | **PostgreSQL 16** | قوة الفهرسة، أمان المعاملات المالية (ACID)، ودعم JSONB |
-| **طابور المهام (Queue)** | **BullMQ + Redis 7.2** | إدارة عمليات التجهيز غير المتزامنة ومراقبة حالة كل سيرفر |
-| **إدارة الحاويات** | **Docker Engine API + Traefik v3** | مرونة وسرعة نشر الحاويات مع شهادات SSL آلية بدون توقف |
-| **مراقبة العتاد** | **Prometheus + Node Exporter** | جمع إحصائيات المعالجات والرام والشبكة وبثها للفرونت إند |
-
----
-
-> تم إعداد هذا التوثيق ليتكامل 100% مع واجهة الفرونت إند الحالية المبنية وفق نظام **Cloud Core Precision**.
+> هذا الدليل يمثل المرجع الكامل والنهائي لبناء الباك إند بـ **PHP & MySQL** ليتوافق بسلاسة مع الفرونت إند الحالي.

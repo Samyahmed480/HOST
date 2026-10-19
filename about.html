@@ -48,7 +48,8 @@
           <span class="brand-badge">Cloud Core v2.4</span>
         </a>
 
-        <nav>
+        <!-- Navigation Links (Desktop) -->
+        <nav class="desktop-nav">
           <ul class="nav-links">
             <li><a href="index.html#n8n-plans" class="nav-link">سحابة n8n للأتمتة</a></li>
             <li><a href="index.html#cloud-plans" class="nav-link">السيرفرات السحابية</a></li>
@@ -59,11 +60,54 @@
         </nav>
 
         <div class="header-actions">
-          <a href="index.html#cloud-plans" class="btn btn-secondary btn-sm">السيرفرات السحابية</a>
-          <a href="index.html#n8n-plans" class="btn btn-accent btn-sm">
+          <a href="index.html#cloud-plans" class="btn btn-secondary btn-sm header-action-cloud">السيرفرات السحابية</a>
+          <a href="index.html#n8n-plans" class="btn btn-accent btn-sm header-action-cta">
             <span>تصفح الباقات</span>
             <span>←</span>
           </a>
+
+          <!-- Mobile Hamburger Toggle Button -->
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Frosted Glass Drawer -->
+    <div id="mobileNavDrawer" class="mobile-nav-drawer" aria-hidden="true">
+      <div class="container mobile-drawer-inner">
+        <!-- Tax & Legal Registration Badge -->
+        <div class="mobile-tax-badge">
+          <span class="live-pulse-dot"></span>
+          <span>شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636)</span>
+        </div>
+
+        <!-- Mobile Navigation List -->
+        <ul class="mobile-nav-list">
+          <li><a href="index.html#n8n-plans" class="mobile-nav-item"><span class="m-icon">⚡</span><span>سحابة n8n للأتمتة</span><span class="m-arrow">←</span></a></li>
+          <li><a href="index.html#cloud-plans" class="mobile-nav-item"><span class="m-icon">☁️</span><span>السيرفرات السحابية</span><span class="m-arrow">←</span></a></li>
+          <li><a href="index.html#templates" class="mobile-nav-item"><span class="m-icon">🧩</span><span>قوالب الأتمتة الجاهزة</span><span class="m-arrow">←</span></a></li>
+          <li><a href="about.html" class="mobile-nav-item"><span class="m-icon">🏛️</span><span>من نحن (About EGYHOST)</span><span class="m-arrow">←</span></a></li>
+          <li><a href="privacy.html" class="mobile-nav-item"><span class="m-icon">🔒</span><span>سياسة الخصوصية</span><span class="m-arrow">←</span></a></li>
+        </ul>
+
+        <!-- Mobile Drawer Action Buttons -->
+        <div class="mobile-drawer-actions">
+          <a href="index.html#n8n-plans" class="btn btn-accent btn-lg mobile-cta-btn">
+            <span>تصفح كافة الباقات</span>
+            <span>←</span>
+          </a>
+          <a href="https://wa.me/201000000000" target="_blank" rel="noopener" class="btn btn-secondary mobile-support-btn">
+            <span>💬 الدعم الفني المباشر (24/7)</span>
+          </a>
+        </div>
+
+        <!-- Mobile Drawer Meta -->
+        <div class="mobile-drawer-meta">
+          <span>ضمان استرداد 30 يوماً • بنية مصرية متقدمة EG-IX</span>
         </div>
       </div>
     </div>
@@ -99,7 +143,7 @@
   <section style="padding: 20px 0 60px;">
     <div class="container">
       <div class="apple-reveal" style="background: var(--apple-glass-card); backdrop-filter: var(--apple-blur); -webkit-backdrop-filter: var(--apple-blur); border: 1px solid var(--apple-glass-border); border-radius: var(--apple-bento-radius); padding: 44px; box-shadow: var(--apple-glass-bevel), var(--shadow-card-apple);">
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;">
+        <div class="about-overview-grid">
           <div>
             <h2 class="headline-md" style="margin-bottom: 16px;">الريادة في البنية التحتية الرقمية بلمسة محلية</h2>
             <p class="body-lg" style="margin-bottom: 16px;">
@@ -153,7 +197,7 @@
         <p class="body-lg">حلول تقنية متكاملة مصممة لتلائم جميع مراحل نمو مشروعك الرقمي.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <div class="about-services-grid">
         <!-- Service 1 -->
         <div class="kpi-card accent-cyan">
           <div style="font-size: 28px; margin-bottom: 12px;">🌐</div>
@@ -208,7 +252,7 @@
         <p class="body-lg">نحن نبني علاقتنا مع عملائنا على أسس الثقة، الشفافية، والأداء التقني الرفيع.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 980px; margin: 0 auto;">
+      <div class="about-features-grid">
         <div style="background-color: #ffffff; border: 1px solid var(--surface-border); border-radius: var(--rounded-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
           <span style="font-size: 22px; color: var(--secondary);">✓</span>
           <div>
@@ -258,7 +302,7 @@
         </div>
 
         <!-- 30-Day Money Back Guarantee -->
-        <div style="grid-column: span 2; background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(0, 123, 255, 0.06) 100%); border: 1px solid rgba(5, 150, 105, 0.3); border-radius: var(--rounded-md); padding: 22px; display: flex; gap: 16px; align-items: center;">
+        <div class="guarantee-banner-box" style="grid-column: span 2; background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(0, 123, 255, 0.06) 100%); border: 1px solid rgba(5, 150, 105, 0.3); border-radius: var(--rounded-md); padding: 22px; display: flex; gap: 16px; align-items: center;">
           <div style="width: 44px; height: 44px; border-radius: 50%; background-color: var(--metric-success); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🛡️</div>
           <div>
             <strong style="color: var(--primary); font-size: 16px; display: block; margin-bottom: 2px;">ضمان استرداد الأموال خلال 30 يومًا</strong>
@@ -272,7 +316,7 @@
   <!-- Vision & Mission -->
   <section style="padding: 70px 0; background-color: var(--server-navy-deep); color: #ffffff;">
     <div class="container">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px;">
+      <div class="about-mission-grid">
         <div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--rounded-lg); padding: 36px;">
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
             <span style="font-size: 32px;">🎯</span>

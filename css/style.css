@@ -1450,3 +1450,625 @@ input:checked + .slider-round:before {
   border-color: rgba(0, 89, 187, 0.25);
   box-shadow: var(--apple-glass-bevel), var(--shadow-card-apple-hover);
 }
+
+/* ========================================================
+   Mobile Navigation & Apple Frosted Glass Drawer System
+   ======================================================== */
+body.mobile-nav-locked {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* Apple Animated Hamburger Button */
+.mobile-menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--apple-glass-border);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  transition: all var(--transition-fast) var(--apple-spring);
+  box-shadow: 0 2px 8px rgba(0, 23, 62, 0.04);
+  z-index: 1002;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-menu-toggle:hover {
+  background: #ffffff;
+  border-color: rgba(0, 89, 187, 0.3);
+  transform: scale(1.04);
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background-color: var(--primary);
+  border-radius: 2px;
+  transition: transform 0.35s var(--apple-spring), opacity 0.25s ease, background-color 0.25s ease;
+  transform-origin: center;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background-color: var(--secondary);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background-color: var(--secondary);
+}
+
+/* Apple Liquid Glass Mobile Drawer */
+.mobile-nav-drawer {
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-top: 1px solid var(--apple-glass-border);
+  z-index: 999;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 0 36px;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.35s var(--apple-spring), transform 0.35s var(--apple-spring);
+}
+
+.mobile-nav-drawer.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-drawer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-tax-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(0, 89, 187, 0.05);
+  border: 1px solid rgba(0, 89, 187, 0.16);
+  border-radius: var(--rounded-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.4;
+}
+
+.mobile-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 23, 62, 0.06);
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  transition: all var(--transition-fast) var(--apple-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item:active,
+.mobile-nav-item:hover {
+  background: #ffffff;
+  border-color: rgba(0, 89, 187, 0.3);
+  color: var(--secondary);
+  transform: translateX(-3px);
+  box-shadow: 0 4px 14px rgba(0, 23, 62, 0.06);
+}
+
+.mobile-nav-item .m-icon {
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.mobile-nav-item .m-arrow {
+  font-size: 14px;
+  color: var(--outline);
+  transition: transform var(--transition-fast) var(--apple-spring);
+}
+
+.mobile-nav-item:hover .m-arrow,
+.mobile-nav-item:active .m-arrow {
+  transform: translateX(-4px);
+  color: var(--secondary);
+}
+
+.mobile-drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.mobile-cta-btn {
+  width: 100%;
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mobile-support-btn {
+  width: 100%;
+  min-height: 46px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.mobile-drawer-meta {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--outline);
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0, 23, 62, 0.1);
+}
+
+/* Grids for Secondary Pages */
+.about-overview-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.about-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.about-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.about-mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+
+.legal-two-col-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* ========================================================
+   Breakpoints: <= 992px (Tablets & Landscape Phones)
+   ======================================================== */
+@media (max-width: 992px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .header-action-cloud {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+
+  .mobile-nav-drawer {
+    display: block !important;
+  }
+
+  .about-overview-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .about-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-mission-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ========================================================
+   Breakpoints: <= 768px (Standard Smartphones)
+   ======================================================== */
+@media (max-width: 768px) {
+  /* Top Banner on Mobile */
+  .header-top-banner {
+    padding: 6px 0;
+    font-size: 11.5px;
+  }
+
+  .header-top-inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-top-inner > div:last-child {
+    display: none !important;
+  }
+
+  /* Header Bar */
+  .brand-logo-img {
+    height: 40px;
+  }
+
+  .brand-badge {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+
+  .header-action-cta {
+    display: none !important;
+  }
+
+  .mobile-nav-drawer {
+    top: 64px;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 40px 0 60px;
+  }
+
+  .hero-badge-row {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .hero-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .hero-content-centered .hero-title {
+    font-size: 32px;
+    line-height: 42px;
+    margin-bottom: 16px;
+  }
+
+  .hero-content-centered .hero-description {
+    font-size: 14.5px;
+    line-height: 25px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+  }
+
+  .hero-content-centered .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .hero-content-centered .hero-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 15px;
+    justify-content: center;
+  }
+
+  /* KPI Section */
+  .kpi-section {
+    padding: 10px 0 40px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    padding: 16px 14px;
+    border-radius: 18px;
+  }
+
+  .kpi-value {
+    font-size: 26px;
+  }
+
+  .kpi-label {
+    font-size: 12px;
+  }
+
+  .kpi-meta {
+    font-size: 11px;
+  }
+
+  /* Plans Section */
+  .plans-section {
+    padding: 60px 0;
+  }
+
+  .plan-type-tabs {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    padding: 3px;
+    margin-bottom: 22px;
+  }
+
+  .plan-tab-btn {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .billing-toggle-wrapper {
+    margin-bottom: 32px;
+    gap: 10px;
+    font-size: 13px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 22px;
+  }
+
+  .pricing-card {
+    padding: 26px 20px;
+    border-radius: 22px;
+  }
+
+  .price-amount {
+    font-size: 38px;
+  }
+
+  .plan-specs-list {
+    margin-bottom: 24px;
+  }
+
+  .spec-item {
+    font-size: 13px;
+    padding: 9px 0;
+  }
+
+  .pricing-card .btn {
+    min-height: 46px;
+  }
+
+  /* Templates & FAQ */
+  .templates-section {
+    padding: 60px 0;
+  }
+
+  .template-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .template-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .faq-section {
+    padding: 60px 0;
+  }
+
+  .faq-question {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .faq-answer {
+    padding: 0 18px 16px;
+    font-size: 13.5px;
+    line-height: 24px;
+  }
+
+  /* Modal Sheet for Mobile */
+  .modal-backdrop {
+    padding: 8px;
+    align-items: flex-end;
+  }
+
+  .modal-box {
+    border-radius: 26px 26px 16px 16px;
+    max-height: 88vh;
+    animation: appleModalMobileEnter 0.35s var(--apple-spring);
+  }
+
+  @keyframes appleModalMobileEnter {
+    from { opacity: 0; transform: translateY(60px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: 16px 18px;
+  }
+
+  .modal-body {
+    padding: 18px;
+  }
+
+  .modal-footer {
+    padding: 14px 18px;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  /* About & Legal Pages */
+  .about-services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .about-features-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .guarantee-banner-box {
+    grid-column: span 1 !important;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .legal-two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .legal-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  /* Footer */
+  .site-footer {
+    padding: 50px 0 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    margin-bottom: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+/* ========================================================
+   Breakpoints: <= 440px (Compact Phones / iPhone SE)
+   ======================================================== */
+@media (max-width: 440px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .brand-logo-img {
+    height: 35px;
+  }
+
+  .brand-badge {
+    display: none;
+  }
+
+  .currency-switcher {
+    padding: 2px;
+  }
+
+  .currency-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .mobile-menu-toggle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .hero-content-centered .hero-title {
+    font-size: 27px;
+    line-height: 36px;
+  }
+
+  .hero-badge-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hero-badge {
+    font-size: 10.5px;
+    padding: 3px 9px;
+  }
+
+  .kpi-grid {
+    gap: 8px;
+  }
+
+  .kpi-card {
+    padding: 12px 10px;
+    border-radius: 14px;
+  }
+
+  .kpi-value {
+    font-size: 21px;
+  }
+
+  .kpi-unit {
+    font-size: 11px;
+  }
+
+  .kpi-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .plan-tab-btn {
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+
+  .price-amount {
+    font-size: 32px;
+  }
+
+  .toast-msg {
+    width: 90%;
+    font-size: 12.5px;
+    padding: 10px 16px;
+    white-space: normal;
+    text-align: center;
+  }
+}
+

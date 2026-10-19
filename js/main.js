@@ -430,6 +430,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  // --- Apple Style Mobile Navigation Drawer Controller ---
+  const mobileToggleBtn = document.getElementById('mobileMenuToggle');
+  const mobileDrawer = document.getElementById('mobileNavDrawer');
+
+  function openMobileMenu() {
+    if (!mobileToggleBtn || !mobileDrawer) return;
+    mobileToggleBtn.classList.add('active');
+    mobileToggleBtn.setAttribute('aria-expanded', 'true');
+    mobileDrawer.classList.add('open');
+    mobileDrawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('mobile-nav-locked');
+  }
+
+  function closeMobileMenu() {
+    if (!mobileToggleBtn || !mobileDrawer) return;
+    mobileToggleBtn.classList.remove('active');
+    mobileToggleBtn.setAttribute('aria-expanded', 'false');
+    mobileDrawer.classList.remove('open');
+    mobileDrawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('mobile-nav-locked');
+  }
+
+  if (mobileToggleBtn && mobileDrawer) {
+    mobileToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mobileDrawer.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    // Close on clicking any link inside drawer
+    mobileDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeMobileMenu();
+      });
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileDrawer.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close if clicked outside
+    document.addEventListener('click', (e) => {
+      if (mobileDrawer.classList.contains('open') && !mobileDrawer.contains(e.target) && !mobileToggleBtn.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    // Auto-close on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 992 && mobileDrawer.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+  }
+
   // --- Apple Card Specular Coordinates ---
   const interactiveCards = document.querySelectorAll('.pricing-card, .kpi-card, .template-card');
   interactiveCards.forEach(card => {

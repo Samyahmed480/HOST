@@ -54,8 +54,8 @@
           <span class="brand-badge">Cloud Core v2.4</span>
         </a>
 
-        <!-- Navigation Links -->
-        <nav>
+        <!-- Navigation Links (Desktop) -->
+        <nav class="desktop-nav">
           <ul class="nav-links">
             <li><a href="#n8n-plans" class="nav-link active">سحابة n8n للأتمتة</a></li>
             <li><a href="#cloud-plans" class="nav-link">السيرفرات السحابية</a></li>
@@ -74,11 +74,55 @@
             <button class="currency-btn" data-currency="USD">USD $</button>
           </div>
 
-          <a href="#cloud-plans" class="btn btn-secondary btn-sm">السيرفرات السحابية</a>
-          <a href="#n8n-plans" class="btn btn-accent btn-sm">
+          <a href="#cloud-plans" class="btn btn-secondary btn-sm header-action-cloud">السيرفرات السحابية</a>
+          <a href="#n8n-plans" class="btn btn-accent btn-sm header-action-cta">
             <span>ابدأ الآن</span>
             <span>←</span>
           </a>
+
+          <!-- Mobile Hamburger Toggle Button -->
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Frosted Glass Drawer -->
+    <div id="mobileNavDrawer" class="mobile-nav-drawer" aria-hidden="true">
+      <div class="container mobile-drawer-inner">
+        <!-- Tax & Legal Registration Badge -->
+        <div class="mobile-tax-badge">
+          <span class="live-pulse-dot"></span>
+          <span>شركة مصرية مسجلة ومرخصة (رقم ضريبي 778319636)</span>
+        </div>
+
+        <!-- Mobile Navigation List -->
+        <ul class="mobile-nav-list">
+          <li><a href="#n8n-plans" class="mobile-nav-item"><span class="m-icon">⚡</span><span>سحابة n8n للأتمتة</span><span class="m-arrow">←</span></a></li>
+          <li><a href="#cloud-plans" class="mobile-nav-item"><span class="m-icon">☁️</span><span>السيرفرات السحابية</span><span class="m-arrow">←</span></a></li>
+          <li><a href="#templates" class="mobile-nav-item"><span class="m-icon">🧩</span><span>قوالب الأتمتة الجاهزة</span><span class="m-arrow">←</span></a></li>
+          <li><a href="#faq" class="mobile-nav-item"><span class="m-icon">❓</span><span>الأسئلة الشائعة</span><span class="m-arrow">←</span></a></li>
+          <li><a href="about.html" class="mobile-nav-item"><span class="m-icon">🏛️</span><span>من نحن (About EGYHOST)</span><span class="m-arrow">←</span></a></li>
+          <li><a href="privacy.html" class="mobile-nav-item"><span class="m-icon">🔒</span><span>سياسة الخصوصية</span><span class="m-arrow">←</span></a></li>
+        </ul>
+
+        <!-- Mobile Drawer Action Buttons -->
+        <div class="mobile-drawer-actions">
+          <a href="#n8n-plans" class="btn btn-accent btn-lg mobile-cta-btn">
+            <span>ابدأ الآن وأطلق سحابتك</span>
+            <span>←</span>
+          </a>
+          <a href="https://wa.me/201000000000" target="_blank" rel="noopener" class="btn btn-secondary mobile-support-btn">
+            <span>💬 الدعم الفني المباشر (24/7)</span>
+          </a>
+        </div>
+
+        <!-- Mobile Drawer Meta -->
+        <div class="mobile-drawer-meta">
+          <span>ضمان استرداد 30 يوماً • بنية مصرية متقدمة EG-IX</span>
         </div>
       </div>
     </div>

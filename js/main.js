@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="price-period">${priceInfo.periodText}</span>
         </div>
 
-        <div style="background-color: var(--surface-ice); padding: 10px 14px; border-radius: var(--rounded-sm); margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px; display: flex; justify-content: space-between; border: 1px solid var(--surface-border);">
+        <div class="ltr-force" style="background-color: var(--surface-ice); padding: 10px 14px; border-radius: var(--rounded-sm); margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px; display: flex; justify-content: space-between; border: 1px solid var(--surface-border); direction: ltr;">
           <span><strong style="color: var(--primary);">${plan.cpu}</strong></span>
           <span><strong style="color: var(--secondary);">${plan.ram}</strong></span>
           <span><strong style="color: var(--on-surface-variant);">${plan.storage}</strong></span>
@@ -282,18 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // --- FAQ Accordion ---
-  const faqItems = document.querySelectorAll('.faq-item');
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    question.addEventListener('click', () => {
-      const isOpen = item.classList.contains('active');
-      faqItems.forEach(other => other.classList.remove('active'));
-      if (!isOpen) {
-        item.classList.add('active');
-      }
-    });
-  });
+
 
 
   // --- Deployment / Checkout Modal Logic ---
@@ -380,7 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Apple Style FAQ Accordion Toggle ---
   const faqQuestions = document.querySelectorAll('.faq-question');
   faqQuestions.forEach(question => {
-    question.addEventListener('click', () => {
+    question.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const parentItem = question.closest('.faq-item');
       if (!parentItem) return;
       const wasActive = parentItem.classList.contains('active');
@@ -527,12 +518,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isInitMobile = window.innerWidth <= 768;
     const camera = new THREE.PerspectiveCamera(
-      isInitMobile ? 72 : 48,
+      isInitMobile ? 76 : 48,
       window.innerWidth / window.innerHeight,
       0.1,
       100
     );
-    camera.position.set(0, isInitMobile ? 4.2 : 4.6, isInitMobile ? 17.0 : 15.0);
+    camera.position.set(0, isInitMobile ? 4.0 : 4.6, isInitMobile ? 16.0 : 15.0);
     camera.lookAt(0, 1.6, -8);
 
     // Ambient & Directional Lighting
@@ -577,35 +568,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const rackEdgeGeo = new THREE.EdgesGeometry(rackGeo);
     const bladeGeo = new THREE.BoxGeometry(1.48, 0.6, 1.7);
 
-    // Parallel Rows of Datacenter Server Racks flanking the corridor
-    // Perfectly positioned to frame mobile and desktop screens with clear view
+    // Dynamic corridor width: precisely tuned for mobile and desktop screens
+    const innerX = isInitMobile ? 3.0 : 4.6;
+    const outerX = isInitMobile ? 5.2 : 7.6;
+
     const ledPoints = [];
     const ledColors = [];
     const serverRacks = [];
 
     const rackPositions = [
       // Left inner corridor: front to back
-      { x: -4.6, z: 3.5 },
-      { x: -4.6, z: -2.0 },
-      { x: -4.6, z: -7.5 },
-      { x: -4.6, z: -13.0 },
-      { x: -4.6, z: -18.5 },
+      { x: -innerX, z: 3.5 },
+      { x: -innerX, z: -2.0 },
+      { x: -innerX, z: -7.5 },
+      { x: -innerX, z: -13.0 },
+      { x: -innerX, z: -18.5 },
       // Left outer corridor: front to back
-      { x: -7.6, z: 1.0 },
-      { x: -7.6, z: -4.5 },
-      { x: -7.6, z: -10.0 },
-      { x: -7.6, z: -15.5 },
+      { x: -outerX, z: 1.0 },
+      { x: -outerX, z: -4.5 },
+      { x: -outerX, z: -10.0 },
+      { x: -outerX, z: -15.5 },
       // Right inner corridor: front to back
-      { x: 4.6, z: 3.5 },
-      { x: 4.6, z: -2.0 },
-      { x: 4.6, z: -7.5 },
-      { x: 4.6, z: -13.0 },
-      { x: 4.6, z: -18.5 },
+      { x: innerX, z: 3.5 },
+      { x: innerX, z: -2.0 },
+      { x: innerX, z: -7.5 },
+      { x: innerX, z: -13.0 },
+      { x: innerX, z: -18.5 },
       // Right outer corridor: front to back
-      { x: 7.6, z: 1.0 },
-      { x: 7.6, z: -4.5 },
-      { x: 7.6, z: -10.0 },
-      { x: 7.6, z: -15.5 }
+      { x: outerX, z: 1.0 },
+      { x: outerX, z: -4.5 },
+      { x: outerX, z: -10.0 },
+      { x: outerX, z: -15.5 }
     ];
 
     rackPositions.forEach(pos => {
@@ -670,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Floor Optical Network Bus Lines
     const lineCoords = [];
-    [-4.6, -7.6, 4.6, 7.6, 0].forEach(lx => {
+    [-innerX, -outerX, innerX, outerX, 0].forEach(lx => {
       lineCoords.push(lx, 0.05, 6);
       lineCoords.push(lx, 0.05, -24);
     });
@@ -754,9 +747,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (isMobile) {
         // Mobile portrait: widen FOV to showcase server racks on both sides of the phone screen
-        camera.fov = 72;
-        targetCamY = 4.2;
-        targetCamZ = 17.0;
+        camera.fov = 76;
+        targetCamY = 4.0;
+        targetCamZ = 16.0;
       } else {
         camera.fov = 48;
         targetCamY = 4.6;
